@@ -6,11 +6,10 @@ import Notification from "./Notification";
 import CompanyLogos from "./CompanyLogos";
 import { curve } from "../assets";
 import hero from "../assets/own/hero.jpg";
-import heroBackground from "../assets/own/heroBackground.jpg";
+import heroBackground from "../assets/own/heroBackground.png";
 import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
 import { heroIcons } from "../constants";
 import { ScrollParallax } from "react-just-parallax";
-<link rel="stylesheet" href="style.css" />
 
 const Hero = () => {
     const parallaxRef = useRef(null);
