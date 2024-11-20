@@ -44,18 +44,18 @@ import {
     },
     {
       id: "1",
-      title: "Készlet",
-      url: "#stock",
+      title: "Jegy felvétele",
+      url: "#new-ticket",
     },
     {
       id: "2",
-      title: "Kölcsönzés",
-      url: "#borrow",
+      title: "Jegyeim",
+      url: "#my-tickets",
     },
     {
       id: "3",
-      title: "Statisztikák",
-      url: "#statistics",
+      title: "FAQ",
+      url: "#faq",
     },
     {
       id: "4",
