@@ -10,6 +10,7 @@ import heroBackground from "../assets/own/heroBackground.jpg";
 import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
 import { heroIcons } from "../constants";
 import { ScrollParallax } from "react-just-parallax";
+<link rel="stylesheet" href="style.css" />
 
 const Hero = () => {
     const parallaxRef = useRef(null);
@@ -81,18 +82,13 @@ const Hero = () => {
             <Gradient />
           </div>
           <div className="absolute -top-[142%] left-1/2 w-[234%] -translate-x-1/2 md:-top-[96%] md:w-[138%] lg:-top-[86%] sm:-top-[104%]">
-            <img
-              src={heroBackground}
-              className="w-full"
-              width={1440}
-              height={1800}
-            />
+            <img src={heroBackground} className="w-full h-full" width={1440} height={1800}/>
           </div>
 
           <BackgroundCircles></BackgroundCircles>
         </div>
 
-        <CompanyLogos className="hidden relative z-10 mt-20 lg:block" />
+        <CompanyLogos className="hidden relative z-10 mt-20 md:block" />
       </div>
       <BottomLine />
     </Section>

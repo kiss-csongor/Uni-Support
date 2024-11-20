@@ -33,9 +33,10 @@ import {
     sliders04,
     telegram,
     twitter,
-    yourlogo,
+    sze_allo_logo,
+    ddc_logo,
+    sze_logo,
     sze_fekvo_logo,
-    ddc_logo
   } from "../assets";
   
   export const navigation = [
@@ -77,7 +78,7 @@ import {
   
   export const notificationImages = [notification4, notification3, notification2];
   
-  export const companyLogos = [sze_fekvo_logo, yourlogo, yourlogo, yourlogo, yourlogo];
+  export const companyLogos = [ddc_logo, sze_fekvo_logo, sze_logo];
   
   export const brainwaveServices = [
     "Photo generating",

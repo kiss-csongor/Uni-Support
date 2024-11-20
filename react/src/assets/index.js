@@ -75,8 +75,10 @@ import instagram from "./socials/instagram.svg";
 import telegram from "./socials/telegram.svg";
 import twitter from "./socials/twitter.svg";
 
+import sze_allo_logo from "./own/sze_allo_logo.png"
 import sze_fekvo_logo from "./own/sze_fekvo_logo.png"
 import ddc_logo from "./own/ddc_logo.png"
+import sze_logo from "./own/sze_logo.png"
 
 export {
   brainwave,
@@ -147,6 +149,8 @@ export {
   instagram,
   telegram,
   twitter,
+  sze_allo_logo,
   sze_fekvo_logo,
   ddc_logo,
+  sze_logo,
 };

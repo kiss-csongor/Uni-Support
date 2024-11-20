@@ -81,6 +81,9 @@ export default {
         "benefit-card-5": "url(assets/benefits/card-5.svg)",
         "benefit-card-6": "url(assets/benefits/card-6.svg)",
       },
+      maskImage: {
+        'gradient-to-b': 'linear-gradient(to bottom, black 0%, transparent 100%)',
+      },
     },
   },
   plugins: [
