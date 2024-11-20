@@ -75,6 +75,9 @@ import instagram from "./socials/instagram.svg";
 import telegram from "./socials/telegram.svg";
 import twitter from "./socials/twitter.svg";
 
+import sze_fekvo_logo from "./own/sze_fekvo_logo.png"
+import ddc_logo from "./own/ddc_logo.png"
+
 export {
   brainwave,
   check,
@@ -144,4 +147,6 @@ export {
   instagram,
   telegram,
   twitter,
+  sze_fekvo_logo,
+  ddc_logo,
 };

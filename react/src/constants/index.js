@@ -34,6 +34,8 @@ import {
     telegram,
     twitter,
     yourlogo,
+    sze_fekvo_logo,
+    ddc_logo
   } from "../assets";
   
   export const navigation = [
@@ -75,7 +77,7 @@ import {
   
   export const notificationImages = [notification4, notification3, notification2];
   
-  export const companyLogos = [yourlogo, yourlogo, yourlogo, yourlogo, yourlogo];
+  export const companyLogos = [sze_fekvo_logo, yourlogo, yourlogo, yourlogo, yourlogo];
   
   export const brainwaveServices = [
     "Photo generating",

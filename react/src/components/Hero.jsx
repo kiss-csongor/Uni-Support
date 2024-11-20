@@ -1,6 +1,9 @@
 import React, { useRef } from "react";
 import Section from "./Section";
 import Button from "./Button";
+import Generating from "./Generating";
+import Notification from "./Notification";
+import CompanyLogos from "./CompanyLogos";
 import { curve } from "../assets";
 import hero from "../assets/own/hero.jpg";
 import heroBackground from "../assets/own/heroBackground.jpg";
@@ -13,7 +16,7 @@ const Hero = () => {
 
   return (
     <Section
-      className="pt-[20rem] -mt-[5.25]"
+      className="pt-[6rem] -mt-[5.25]"
       crosses
       crossesOffset="lg:translate-y-[5.25]"
       customPaddings
@@ -57,6 +60,8 @@ const Hero = () => {
                   height={490}
                 />
 
+                <Generating className="absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2" />
+
                 <ScrollParallax isAbsolutelyPositioned >
                     <ul className="hidden absolute -left-[5.5rem] bottom-[7.5rem] px-1 py-1 bg-n-9/40 backdrop-blur border border-n-1/10 rounded-2xl xl:flex">
                         {heroIcons.map((icon, index) => (
@@ -66,12 +71,16 @@ const Hero = () => {
                         ))}
                     </ul>
                 </ScrollParallax>
+
+                <ScrollParallax isAbsolutelyPositioned>
+                     <Notification className="hidden absolute -right-[5.5rem] bottom-[11rem] w-[18rem] xl:flex" title="A jegyed elfogadták" />
+                </ScrollParallax>
               </div>
             </div>
 
             <Gradient />
           </div>
-          <div className="absolute -top-[134%] left-1/2 w-[234%] -translate-x-1/2 md:-top-[88%] md:w-[138%] lg:-top-[76%] sm:-top-[96%]">
+          <div className="absolute -top-[142%] left-1/2 w-[234%] -translate-x-1/2 md:-top-[96%] md:w-[138%] lg:-top-[86%] sm:-top-[104%]">
             <img
               src={heroBackground}
               className="w-full"
@@ -82,7 +91,10 @@ const Hero = () => {
 
           <BackgroundCircles></BackgroundCircles>
         </div>
+
+        <CompanyLogos className="hidden relative z-10 mt-20 lg:block" />
       </div>
+      <BottomLine />
     </Section>
   );
 };
