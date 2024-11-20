@@ -39,33 +39,33 @@ import {
   export const navigation = [
     {
       id: "0",
-      title: "Features",
-      url: "#features",
+      title: "Főoldal",
+      url: "#home",
     },
     {
       id: "1",
-      title: "Pricing",
-      url: "#pricing",
+      title: "Készlet",
+      url: "#stock",
     },
     {
       id: "2",
-      title: "How to use",
-      url: "#how-to-use",
+      title: "Kölcsönzés",
+      url: "#borrow",
     },
     {
       id: "3",
-      title: "Roadmap",
-      url: "#roadmap",
+      title: "Statisztikák",
+      url: "#statistics",
     },
     {
       id: "4",
-      title: "New account",
+      title: "Új fiók",
       url: "#signup",
       onlyMobile: true,
     },
     {
       id: "5",
-      title: "Sign in",
+      title: "Bejelentkezés",
       url: "#login",
       onlyMobile: true,
     },
