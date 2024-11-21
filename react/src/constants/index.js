@@ -289,7 +289,15 @@ import {
       iconUrl: benefitIcon1,
       imageUrl: benefitImage3,
     },
-
+    {
+      id: "5",
+      title: "Egyszerű kezelhetőség, gyors megoldások",
+      text: "A rendszerünk pont annyira egyszerű, hogy bárki könnyedén használhatja, mégis elég okos ahhoz, hogy gyorsan eljuttassa a bejelentésed a megoldásig.",
+      backgroundUrl: "src/assets/benefits/card-6.svg",
+      iconUrl: benefitIcon2,
+      imageUrl: benefitImage1,
+      light: true,
+    },
   ];
   
   export const socials = [
