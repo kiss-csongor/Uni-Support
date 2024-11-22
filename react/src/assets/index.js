@@ -63,10 +63,23 @@ import benefitCard3 from "./benefits/card-3.svg";
 import benefitCard4 from "./benefits/card-4.svg";
 import benefitCard5 from "./benefits/card-5.svg";
 import benefitCard6 from "./benefits/card-6.svg";
-import benefitIcon1 from "./benefits/icon-1.svg";
-import benefitIcon2 from "./benefits/icon-2.svg";
-import benefitIcon3 from "./benefits/icon-3.svg";
-import benefitIcon4 from "./benefits/icon-4.svg";
+
+import benefitIconConnection from "./benefits/icon-connection.png";
+import benefitIconLock from "./benefits/icon-lock.png";
+import benefitIconMessage from "./benefits/icon-message.png";
+import benefitIconScale from "./benefits/icon-scale.png";
+import benefitIconGear from "./benefits/icon-gear.png";
+import benefitIconHourGlass from "./benefits/icon-hourglass.png";
+import benefitIconMail from "./benefits/icon-mail.png";
+import benefitIconHdd from "./benefits/icon-hdd.png";
+import benefitIconDesktop from "./benefits/icon-desktop.png";
+import benefitIconMap from "./benefits/icon-map.png";
+import benefitIconZap from "./benefits/icon-zap.png";
+import benefitIconSiteMap from './benefits/icon-sitemap.png';
+import benefitIconChart from './benefits/icon-chart.png';
+import benefitIconPrinter from './benefits/icon-printer.png';
+import benefitIconShield from './benefits/icon-shield.png';
+
 import benefitImage1 from "./benefits/image-1.png";
 import benefitImage2 from "./benefits/image-2.png";
 import benefitImage3 from "./benefits/image-3.png";
@@ -77,10 +90,10 @@ import instagram from "./socials/instagram.svg";
 import telegram from "./socials/telegram.svg";
 import twitter from "./socials/twitter.svg";
 
-import sze_allo_logo from "./own/sze_allo_logo.png"
-import sze_fekvo_logo from "./own/sze_fekvo_logo.png"
-import ddc_logo from "./own/ddc_logo.png"
-import sze_logo from "./own/sze_logo.png"
+import sze_allo_logo from "./own/sze_allo_logo.png";
+import sze_fekvo_logo from "./own/sze_fekvo_logo.png";
+import ddc_logo from "./own/ddc_logo.png";
+import sze_logo from "./own/sze_logo.png";
 
 export {
   brainwave,
@@ -141,10 +154,21 @@ export {
   benefitCard4,
   benefitCard5,
   benefitCard6,
-  benefitIcon1,
-  benefitIcon2,
-  benefitIcon3,
-  benefitIcon4,
+  benefitIconConnection,
+  benefitIconScale,
+  benefitIconMessage,
+  benefitIconLock,
+  benefitIconGear,
+  benefitIconHourGlass,
+  benefitIconMail,
+  benefitIconDesktop,
+  benefitIconHdd,
+  benefitIconMap,
+  benefitIconSiteMap,
+  benefitIconZap,
+  benefitIconChart,
+  benefitIconPrinter,
+  benefitIconShield,
   benefitImage1,
   benefitImage2,
   benefitImage3,

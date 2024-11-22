@@ -1,6 +1,5 @@
-import brainwave from "../assets/brainwave.svg";
 import { navigation } from "../constants";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import Button from './Button';
 import MenuSvg from '../assets/svg/MenuSvg'
 import { HamburgerMenu } from './design/Header'
@@ -32,24 +31,24 @@ const Header = () => {
   return (
     <div className={`w-full fixed top-0 z-50 border-b border-n-6 lg:bg-n-8/90 lg:backdrop-blur-sm ${openNavigation ? 'bg-n-8': 'bg-n-8/90 backdrop-blur-sm'}`}>
         <div className="flex items-center px-5 lg:px-7.5 xl:px-10 max-lg:py-1">
-            <a className='block w-[12rem] xl' href="#hero">
-                <img src={sze_fekvo_logo} width={190} height={40} alt='SzE_logo' />
-            </a>
+            <div className='block w-[12rem] xl'>
+                <Link to="/"><img src={sze_fekvo_logo} width={190} height={40} alt='SzE_logo' /></Link>
+            </div>
             <nav className={`${openNavigation ? 'flex' : 'hidden'} fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}>
                 <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
                     {navigation.map((item) => (
-                        <a onClick={handleClick} key={item.id} href={item.url} className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.hash ? 'z-2 lg:text-n-1' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-20`}>
+                        <Link to={item.url} onClick={handleClick} key={item.id} className={`block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.hash ? 'z-2 lg:text-n-1' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-20`}>
                             {item.title}
-                        </a>
+                        </Link>
                 ))}
                 </div>
                 <HamburgerMenu />
             </nav>
-            <a href="#signup" className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
-                Új fiók
-            </a>
-            <Button className="hidden lg:flex" href="#login">
-                Bejelentkezés
+            <div className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
+                <Link to="/signup">Regisztráció</Link>
+            </div>
+            <Button className="hidden lg:flex">
+                <Link to="/login">Bejelentkezés</Link>
             </Button>
             <Button onClick={toggleNavigation} className="ml-auto lg:hidden" px="px-3">
                 <MenuSvg openNavigation={openNavigation} />
