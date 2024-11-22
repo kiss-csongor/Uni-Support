@@ -5,4 +5,7 @@ from .models import *
 
 admin.site.register(UserProfile)
 admin.site.register(Ticket)
+admin.site.register(Category)
+admin.site.register(Post)
+admin.site.register(Comment)
 

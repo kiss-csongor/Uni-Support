@@ -44,7 +44,7 @@ const Hero = () => {
             és kövesd nyomon a folyamatokat az UniSupport átlátható és könnyen
             használható rendszerével.
           </p>
-          <Button href="/register" white>
+          <Button href="/signup" white>
             Kezdjünk bele
           </Button>
         </div>
