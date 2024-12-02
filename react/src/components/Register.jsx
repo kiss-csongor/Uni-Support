@@ -13,6 +13,7 @@ import { ScrollParallax } from "react-just-parallax";
 
 const Register = () => {
   return (
+    <Section>
     <div className="relative max-w-[25rem] mx-auto md:max-w-2xl xl:mb-24 max-h-screen max-sm:mt-10 sm:mt-10">
       <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
         <div className="relative bg-n-8 rounded-[1rem]">
@@ -46,6 +47,7 @@ const Register = () => {
 
       <BackgroundCircles></BackgroundCircles>
     </div>
+    </Section>
   );
 };
 

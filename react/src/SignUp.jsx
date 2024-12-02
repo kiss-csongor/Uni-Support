@@ -1,6 +1,7 @@
 import ButtonGradient from "./assets/svg/ButtonGradient";
 import Button from "./components/Button";
 import Header from "./components/Header";
+import Footer from "./components/Footer";
 import Register from "./components/Register";
 
 
@@ -13,6 +14,7 @@ const SignUp = () => {
         <Header />
         <ButtonGradient />
         <Register />
+        <Footer />
       </div>
 
     </>
