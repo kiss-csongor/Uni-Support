@@ -17,7 +17,7 @@ pipeline {
                     if (!fileExists(TARGET_DIR)) {
                         sh "mkdir -p ${TARGET_DIR}"
                     } else {
-                        sh "rm -rf ${TARGET_DIR}/*"
+                        sh "rm -rf ${TARGET_DIR}"
                     }
                     // Git klónozás
                     sh """
