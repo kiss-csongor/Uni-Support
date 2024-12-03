@@ -16,11 +16,11 @@ pipeline {
                     // Ha a mappa nem létezik, akkor létrehozza
                     if (!fileExists(TARGET_DIR)) {
                         sh "mkdir -p ${TARGET_DIR}"
+                    } else {
+                        sh "rm -rf ${TARGET_DIR}/*"
                     }
-
                     // Git klónozás
                     sh """
-                    rm -rf ${TARGET_DIR}/*
                     git clone --branch ${GIT_BRANCH} ${GIT_REPO_URL} ${TARGET_DIR}
                     cd /home/jenkins/uni-support/react
                     npm install
