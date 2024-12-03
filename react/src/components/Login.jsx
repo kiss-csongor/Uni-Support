@@ -21,14 +21,14 @@ const Register = () => {
           <div className="h-[1.4rem] bg-n-10 rounded-t-[0.9rem]" />
           <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[320/450] sm:aspect-[320/450]">
             <div className="mx-auto mt-5 mb-5 text-center items-center">
-              <p className="text-2xl rounded-b-md rounded-t-md mx-auto mb-10 max-w-64 font-extrabold">Regisztráció</p>
+              <p className="text-2xl rounded-b-md rounded-t-md mx-auto mb-10 max-w-64 font-extrabold">Bejelentkezés</p>
               <div className="mb-5" id="username">
                 <p className="">Felhasználónév</p>
                 <input className="bg-n-5 rounded-md text-center" type="text" />
               </div>
               <div>
                 <p className="">Jelszó</p>
-                <input className="bg-n-5 rounded-md text-center mb-10" type="text" />
+                <input className="bg-n-5 rounded-md text-center mb-10" type="password" />
                 <div className="button hidden text-n-1/50 transition-colors hover:text-n-1 lg:block mb-1">
                   <Link >Elfelejtett jelszó</Link>
                 </div>

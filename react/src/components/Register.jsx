@@ -31,11 +31,15 @@ const Register = () => {
               </div>
               <div>
                 <p className="">Jelszó</p>
-                <input className="bg-n-5 rounded-md text-center mb-5" type="text" />
+                <input className="bg-n-5 rounded-md text-center mb-5" type="password" />
               </div>
               <div>
                 <p className="">Jelszó megerősítés</p>
-                <input className="bg-n-5 rounded-md text-center mb-10" type="text" />
+                <input className="bg-n-5 rounded-md text-center mb-5" type="password" />
+              </div>
+              <div className="mb-2">
+                  <input id="link-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
+                  <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Elfogadom a <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">szerződési feltételeket</a>.</label>
               </div>
               <Button className="">Regisztráció</Button>
             </div>
