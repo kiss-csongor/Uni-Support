@@ -16,16 +16,13 @@ pipeline {
                     // Git safe directory hozzáadása
                     sh "git config --global --add safe.directory ${TARGET_DIR}"
                     
-                    // Stash-elés a módosítások elmentésére
-                    sh "git stash"
+                    // Tisztítjuk a nem követett fájlokat (pl. node_modules/), ha szükséges
+                    sh "git clean -fd"
                     
                     // Git pull
                     sh "git pull origin ${GIT_BRANCH}"
-                    
-                    // Visszaállítás a stash-ből
-                    sh "git stash pop"
 
-                    echo "Building React application"
+                                        echo "Building React application"
                     sh """
                     cd ${TARGET_DIR}/react
                     npm run build
@@ -33,7 +30,5 @@ pipeline {
                 }
             }
         }
-
-        // További lépések, mint a build és deploy
     }
 }
