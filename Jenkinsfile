@@ -8,15 +8,22 @@ pipeline {
     }
 
     stages {
-        stage('Update and Build') {
+        stage('Pull Latest Changes') {
             steps {
                 script {
-                    echo "Pulling latest changes in ${TARGET_DIR}"
-
-                    sh """
-                    cd ${TARGET_DIR}
-                    git pull origin ${GIT_BRANCH}
-                    """
+                    echo "Pulling latest changes from the repository"
+                    
+                    // Git safe directory hozzáadása
+                    sh "git config --global --add safe.directory ${TARGET_DIR}"
+                    
+                    // Stash-elés a módosítások elmentésére
+                    sh "git stash"
+                    
+                    // Git pull
+                    sh "git pull origin ${GIT_BRANCH}"
+                    
+                    // Visszaállítás a stash-ből
+                    sh "git stash pop"
 
                     echo "Building React application"
                     sh """
@@ -26,5 +33,7 @@ pipeline {
                 }
             }
         }
+
+        // További lépések, mint a build és deploy
     }
 }
