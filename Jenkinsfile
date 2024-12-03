@@ -23,6 +23,7 @@ pipeline {
                     sh """
                     git clone --branch ${GIT_BRANCH} ${GIT_REPO_URL} ${TARGET_DIR}
                     cd /home/jenkins/uni-support/react
+                    npm install vite
                     npm run build
                     """
                 }
