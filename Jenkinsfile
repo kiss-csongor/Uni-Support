@@ -4,7 +4,7 @@ pipeline {
     environment {
         // A repository klónozási helye
         TARGET_DIR = '/home/jenkins/'
-        GIT_REPO_URL = https://github.com/kiss-csongor/Modern-React-UI-UX.git  // A GitHub repo URL-je
+        GIT_REPO_URL = 'https://github.com/kiss-csongor/Modern-React-UI-UX.git'  // A GitHub repo URL-je
         GIT_BRANCH = 'main'  // Az ágat is beállíthatod, ha szükséges
     }
 
