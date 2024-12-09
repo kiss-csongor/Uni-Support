@@ -61,6 +61,10 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
 ]
 
+CORS_ALLOWED_ORIGINS = [
+    'https://uni-support.sytes.net',  # A frontend URL-je
+]
+
 ROOT_URLCONF = 'backend.urls'
 
 TEMPLATES = [
