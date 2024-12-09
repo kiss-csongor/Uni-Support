@@ -1,16 +1,15 @@
-from rest_framework.views import APIView
+from rest_framework import status, generics
 from rest_framework.response import Response
-from rest_framework import status
+from .serializers import LoginSerializer
 
-class TaskList(APIView):
-    def get(self, request):
-        tasks = Task.objects.all()
-        serializer = TaskSerializer(tasks, many=True)
-        return Response(serializer.data)
+class LoginView(generics.GenericAPIView):
+    serializer_class = LoginSerializer
 
     def post(self, request):
-        serializer = TaskSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            # Sikeres bejelentkezés esetén választ adunk
+            return Response({"message": "Bejelentkezés sikeres!"}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

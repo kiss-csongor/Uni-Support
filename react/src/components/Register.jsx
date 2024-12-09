@@ -1,15 +1,7 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Section from "./Section";
 import Button from "./Button";
-import Generating from "./Generating";
-import Notification from "./Notification";
-import CompanyLogos from "./CompanyLogos";
-import { curve } from "../assets";
-import hero from "../assets/own/hero.jpg";
-import heroBackground from "../assets/own/heroBackground.png";
 import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
-import { heroIcons } from "../constants";
-import { ScrollParallax } from "react-just-parallax";
 
 const Register = () => {
   return (

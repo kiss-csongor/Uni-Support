@@ -26,6 +26,9 @@
     "eslint-plugin-react-refresh": "^0.4.14",
     "globals": "^15.11.0",
     "postcss": "^8.4.49",
+    "react-just-parallax": "^3.1.16",
+    "react-router-dom": "^7.0.2",
+    "scroll-lock": "^2.1.5",
     "tailwindcss": "^3.4.15",
     "vite": "^5.4.11"
   }

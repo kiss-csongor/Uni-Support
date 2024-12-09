@@ -1,0 +1,13 @@
+.username-line::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: white;
+}
+
+.password-line::after {
+    content: '';
+    display: block;
+    height: 1px;
+    background-color: white;
+}

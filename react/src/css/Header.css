@@ -1,0 +1,19 @@
+.link-line::after {
+    content: '';
+    display: block;
+    width: 0;
+    height: 1.5px;
+    background-color: white;
+    transition: width 0.s ease;
+}
+
+.link-line:hover::after {
+    width: 100%;
+}
+
+.link-line-active::after {
+    content: '';
+    display: block;
+    width: 100%;
+    background-color: white;
+}
