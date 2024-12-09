@@ -48,7 +48,7 @@ const Header = () => {
                 <Link to="/signup">Regisztráció</Link>
             </div>
             <Button className="hidden lg:flex">
-                <Link to="/login">Bejelentkezés</Link>
+                <Link to="/signin">Bejelentkezés</Link>
             </Button>
             <Button onClick={toggleNavigation} className="ml-auto lg:hidden" px="px-3">
                 <MenuSvg openNavigation={openNavigation} />

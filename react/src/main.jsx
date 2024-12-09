@@ -8,7 +8,7 @@ import MyTickets from "./MyTickets.jsx";
 import NewTicket from "./NewTicket.jsx";
 import FAQ from "./FAQ.jsx";
 import SignUp from "./SignUp.jsx";
-import Login from "./Login.jsx";
+import SignIn from "./SignIn.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -19,7 +19,7 @@ createRoot(document.getElementById("root")).render(
         <Route path="/new-ticket" element={<NewTicket />} />
         <Route path="/faq" element={<FAQ />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/signin" element={<SignIn />} />
       </Routes>
     </Router>
   </StrictMode>

@@ -82,7 +82,7 @@ export const navigation = [
   {
     id: "5",
     title: "Bejelentkezés",
-    url: "/login",
+    url: "/signin",
     onlyMobile: true,
   },
 ];
