@@ -1,0 +1,29 @@
+# Alap image: Node.js 22.11.0
+FROM node:22.11.0 AS build
+
+# Munka könyvtár beállítása
+WORKDIR /app
+
+# NPM csomagok telepítése
+# Másold a react mappában lévő package.json és package-lock.json fájlokat
+COPY react/package.json react/package-lock.json ./
+
+# NPM csomagok telepítése
+RUN npm install
+
+# React alkalmazás építése
+# Másold a teljes react mappát
+COPY react/ /app/
+RUN npm run build
+
+# NGINX használata az épített alkalmazás kiszolgálására
+FROM nginx:alpine
+
+# Másold a dist könyvtárat az nginx webroot-jába
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Port kinyitása
+EXPOSE 80
+
+# Alkalmazás indítása
+CMD ["nginx", "-g", "daemon off;"]

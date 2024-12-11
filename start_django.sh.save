@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Aktiváljuk a virtuális környezetet
-source /home/kisscsongor/Modern-React-UI-UX/backend/e
-nv/bin/activate
-
-# Futassuk a Django alkalmazást
-python manage.py runserver
