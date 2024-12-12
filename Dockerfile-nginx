@@ -1,6 +1,8 @@
-# Alap image: nginx
+# Alap image: Nginx
 FROM nginx:alpine
 
 # Portok megnyitása
-EXPOSE 80
-EXPOSE 443
+EXPOSE 80 443
+
+# Nginx indítása
+CMD ["nginx", "-g", "daemon off;"]

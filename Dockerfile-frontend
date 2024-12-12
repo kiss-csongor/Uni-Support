@@ -6,24 +6,15 @@ WORKDIR /app
 
 # NPM csomagok telepítése
 # Másold a react mappában lévő package.json és package-lock.json fájlokat
-COPY react/package.json react/package-lock.json ./
+COPY react/package.json react/package-lock.json ./ 
 
 # NPM csomagok telepítése
 RUN npm install
 
-# React alkalmazás építése
-# Másold a teljes react mappát
+# A React alkalmazás forráskódjának másolása
 COPY react/ /app/
+
+# React alkalmazás építése
 RUN npm run build
 
-# NGINX használata az épített alkalmazás kiszolgálására
-FROM nginx:alpine
-
-# Másold a dist könyvtárat az nginx webroot-jába
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Port kinyitása
-EXPOSE 80
-
-# Alkalmazás indítása
-CMD ["nginx", "-g", "daemon off;"]
+# Később a build fájlokat fogjuk kiszolgálni a Nginx konténerből
