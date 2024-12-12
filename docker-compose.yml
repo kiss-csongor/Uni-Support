@@ -12,14 +12,14 @@ services:
       - "./backend/db.sqlite3:/app/db.sqlite3"
     environment:
       - DEBUG=True
-      - ALLOWED_HOSTS=localhost
+      - ALLOWED_HOSTS=uni-support.sytes.net, localhost
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile-frontend
     ports:
-      - "3000:80"
+      - "3000:3000"
     volumes:
       - ./react:/app
       - react-build:/app/dist

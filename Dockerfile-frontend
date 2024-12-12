@@ -17,4 +17,13 @@ COPY react/ /app/
 # React alkalmazás építése
 RUN npm run build
 
-# Később a build fájlokat fogjuk kiszolgálni a Nginx konténerből
+# Alap image: Nginx
+FROM nginx:alpine
+
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# Portok megnyitása
+EXPOSE 3000
+
+# Nginx indítása
+CMD ["nginx", "-g", "daemon off;"]

@@ -15,5 +15,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Projekt fájlok másolása
 COPY backend /app
 
+# Nyisd meg a megfelelő portot
+EXPOSE 8000
+
 # Alkalmazás futtatása Gunicorn segítségével
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "backend.wsgi:application"]
