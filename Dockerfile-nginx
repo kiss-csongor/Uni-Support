@@ -1,16 +1,6 @@
 # Alap image
 FROM nginx:alpine
 
-# Másold be az NGINX konfigurációt
-COPY /etc/nginx/sites-available/vizsgaremek /etc/nginx/conf.d/default.conf
-
-# SSL tanúsítványok másolása
-COPY ./etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem /etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem
-COPY ./etc/letsencrypt/live/uni-support.sytes.net/privkey.pem /etc/letsencrypt/live/uni-support.sytes.net/privkey.pem
-
-# Statikus fájlok másolása (React build)
-COPY react/dist /usr/share/nginx/html
-
 # Portok megnyitása
 EXPOSE 80
 EXPOSE 443

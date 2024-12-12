@@ -36,4 +36,6 @@ services:
       - frontend
       - backend
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ../../../../../../../../etc/nginx/sites-available/vizsgaremek:/etc/nginx/conf.d/default.conf
+      - ../../../../../../../../etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem:/etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem
+      - ../../../../../../../../etc/letsencrypt/live/uni-support.sytes.net/privkey.pem:/etc/letsencrypt/live/uni-support.sytes.net/privkey.pem
