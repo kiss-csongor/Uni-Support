@@ -22,6 +22,7 @@ services:
       - "3000:80"
     volumes:
       - ./react:/app
+      - frontend_dist:/app/dist  # Itt használjuk a közös volumet
     stdin_open: true
     tty: true
 
@@ -36,6 +37,10 @@ services:
       - frontend
       - backend
     volumes:
+      - frontend_dist:/usr/share/nginx/html  # Itt csatoljuk a közös volumet
       - ../../../../../../../../etc/nginx/sites-available/vizsgaremek:/etc/nginx/conf.d/default.conf
       - ../../../../../../../../etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem:/etc/letsencrypt/live/uni-support.sytes.net/fullchain.pem
       - ../../../../../../../../etc/letsencrypt/live/uni-support.sytes.net/privkey.pem:/etc/letsencrypt/live/uni-support.sytes.net/privkey.pem
+
+volumes:
+  frontend_dist:  # Itt definiáljuk a közös volumet

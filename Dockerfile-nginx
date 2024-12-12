@@ -1,8 +1,5 @@
-# Alap image
+# Alap image: nginx
 FROM nginx:alpine
-
-# Statikus fájlok másolása (React build)
-COPY react/dist /usr/share/nginx/html
 
 # Portok megnyitása
 EXPOSE 80
