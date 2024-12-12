@@ -1,6 +1,9 @@
 # Alap image
 FROM nginx:alpine
 
+# Statikus fájlok másolása (React build)
+COPY react/dist /usr/share/nginx/html
+
 # Portok megnyitása
 EXPOSE 80
 EXPOSE 443
