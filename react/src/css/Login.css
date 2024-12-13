@@ -11,3 +11,9 @@
     height: 1px;
     background-color: white;
 }
+
+.bg-image{
+    background-image: url('../assets/own/loginBackground.png');
+    background-repeat: no-repeat;
+    background-position: center;
+}

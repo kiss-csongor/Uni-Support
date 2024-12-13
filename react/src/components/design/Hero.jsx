@@ -11,6 +11,22 @@ export const Gradient = () => {
     </>
   );
 };
+export const LoginGradientTop = () => {
+  return (
+    <>
+      <div className="relative z-1 h-[1rem] mx-6 bg-n-6/70 shadow-xl rounded-t-[1.25rem] lg:mx-20 border-t-[1px] border-n-1" />
+      <div className="relative z-1 h-[1rem] mx-2.5 bg-n-6/80 shadow-xl rounded-t-[1.25rem] lg:mx-8 border-[1px] border-n-1" />  
+    </>
+  );
+};
+export const LoginGradientBottom = () => {
+  return (
+    <>
+      <div className="relative z-1 h-[1rem] mx-2.5 bg-n-6/80 shadow-xl rounded-b-[1.25rem] lg:mx-8 border-b-[1px] border-n-1" />
+      <div className="relative z-1 h-[1rem] mx-6 bg-n-6/65 shadow-xl rounded-b-[1.25rem] lg:mx-20 border-b-[1px] border-n-1" />
+    </>
+  );
+};
 
 export const BottomLine = () => {
   return (
@@ -27,10 +43,10 @@ export const BottomLine = () => {
 const Rings = () => {
   return (
     <>
-      <div className="absolute top-1/2 left-1/2 w-[65.875rem] aspect-square border border-n-2/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-1/2 left-1/2 w-[51.375rem] aspect-square border border-n-2/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-1/2 left-1/2 w-[36.125rem] aspect-square border border-n-2/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
-      <div className="absolute top-1/2 left-1/2 w-[23.125rem] aspect-square border border-n-2/10 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[65.875rem] aspect-square border border-n-2/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[51.375rem] aspect-square border border-n-2/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[36.125rem] aspect-square border border-n-2/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
+      <div className="absolute top-1/2 left-1/2 w-[23.125rem] aspect-square border border-n-2/20 rounded-full -translate-x-1/2 -translate-y-1/2" />
     </>
   );
 };
