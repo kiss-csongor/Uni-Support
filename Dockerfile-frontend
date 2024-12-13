@@ -20,6 +20,7 @@ RUN npm run build
 # Alap image: Nginx
 FROM nginx:alpine
 
+ARG CACHE_BUST=1
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Portok megnyitása
