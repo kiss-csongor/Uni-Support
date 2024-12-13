@@ -16,7 +16,7 @@ const Register = () => {
     e.preventDefault();
     
     try {
-      const response = await axios.post("http://localhost/api/login/", {
+      const response = await axios.post("https://uni-support.sytes.net/api/login/", {
         username: username,
         password: password
       });
