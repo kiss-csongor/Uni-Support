@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import '../css/Login.css'
+import '../css/Login-Register.css'
 import Section from "./Section";
 import Button from "./Button";
 import { BackgroundCircles,  GradientBottom, GradientTop } from "./design/Hero";
@@ -27,7 +27,6 @@ const Login = () => {
       if (response.status === 200) {
         login();
         navigate('/new-ticket')
-        console.log("Sikeres bejelentkezés! ");
       }
     } catch {
       setError("Hibás felhasználónév vagy jelszó!");
@@ -41,29 +40,29 @@ const Login = () => {
       <GradientTop />
         <div className="relative rounded-[1rem] border-solid border-[2px] backdrop-blur-sm">
           <div/>
-          <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[320/450] sm:aspect-[320/450]">
+          <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[400/450] sm:aspect-[400/450]">
             <div className="mx-auto mt-5 mb-5 text-center items-center">
-              <p className="text-2xl rounded-b-md rounded-t-md mx-auto mb-10 max-w-64 font-extrabold">Bejelentkezés</p>
+              <p className="text-2xl rounded-b-md rounded-t-md mx-auto max-md:mb-14 md:mb-20 max-w-64 font-extrabold uppercase">Bejelentkezés</p>
               <form onSubmit={handleLogin}>
-              <div className="mb-5">
-                <p className="mb-2">Felhasználónév</p>
-                <div className="username group mx-auto max-md:w-60 md:w-80">
-                    <input value={username} onChange={(e) => setUsername(e.target.value)} className="p-1 bg-transparent focus:bg-n-6/60 focus:outline-none rounded-md max-md:w-60 sm:w-80" type="text" placeholder="John Doe" maxLength={25} />
-                    <div className="group-focus-within:hidden username-line" />
+              <div className="mb-12">
+                <div className="username group mx-auto max-md:w-60 md:w-80 text-left relative">
+                    <label htmlFor="username" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${username ? "-translate-y-6" : "-translate-y-0"}`}>Felhasználónév</label>
+                    <input id="username" value={username} onChange={(e) => setUsername(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${username ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="text" maxLength={25} />
+                    <div className="username-line" />
                 </div>
               </div>
               <div className="mb-10">
-                <p className="mb-2" id='password'>Jelszó</p>
-                <div className="password group mx-auto max-md:w-60 md:w-80">
-                    <input value={password} onChange={(e) => setPassword(e.target.value)} className="p-1 bg-transparent focus:bg-n-6/60 focus:outline-none rounded-md max-md:w-60 sm:w-80" type="password" placeholder="Password123" maxLength={25} />
-                    <div className="group-focus-within:hidden password-line" />
+              <div className="password group mx-auto max-md:w-60 md:w-80 text-left relative">
+                    <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
+                    <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${password ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="password" maxLength={25} />
+                    <div className="password-line" />
                 </div>
               </div>
               <div className="button hidden lg:block mb-1">
                   <Link className="text-n-1/50 transition-colors hover:text-n-1" >Elfelejtett jelszó</Link>
               </div>
               {error && <p className="text-red-500">{error}</p>}
-              <div className="button hidden lg:block mb-1">
+              <div className="button block mb-1">
                   <Button type="submit">Bejelentkezés</Button>
               </div>
               </form>

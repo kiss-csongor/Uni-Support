@@ -1,47 +1,80 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
+import '../css/Login-Register.css'
 import Section from "./Section";
 import Button from "./Button";
-import { BackgroundCircles, BottomLine, Gradient } from "./design/Hero";
+import { BackgroundCircles,  GradientBottom, GradientTop } from "./design/Hero";
+import { Link } from "react-router-dom";
+import axios from "axios"; // Axios HTTP kliens importálása
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const { login, isLoggedIn } = useAuth(); // Auth állapot kezelése
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("https://uni-support.sytes.net/api/login/", {
+        username,
+        password,
+      });
+
+      if (response.status === 200) {
+        login();
+        navigate('/new-ticket')
+      }
+    } catch {
+      setError("Hibás felhasználónév vagy jelszó!");
+    }
+  };
+
   return (
-    <Section>
+    <Section className='bg-image'>
     <div className="relative max-w-[25rem] mx-auto md:max-w-2xl xl:mb-24 max-h-screen max-sm:mt-10 sm:mt-10">
-      <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
-        <div className="relative bg-n-8 rounded-[1rem]">
-          <div className="h-[1.4rem] bg-n-10 rounded-t-[0.9rem]" />
+      <div className="relative z-1 p-0.5 rounded-2xl">
+      <GradientTop />
+        <div className="relative rounded-[1rem] border-solid border-[2px] backdrop-blur-sm">
+          <div/>
           <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[320/450] sm:aspect-[320/450]">
             <div className="mx-auto mt-5 mb-5 text-center items-center">
-              <p className="text-2xl rounded-b-md rounded-t-md mx-auto mb-10 max-w-64 font-extrabold">Regisztráció</p>
-              <div className="mb-5" id="username">
-                <p className="">Felhasználónév</p>
-                <input className="bg-n-5 rounded-md text-center" type="text" />
+              <p className="text-2xl rounded-b-md rounded-t-md mx-auto mb-20 max-w-64 font-extrabold uppercase">Regisztráció</p>
+              <form onSubmit={handleLogin}>
+                <div className="mb-12 username group mx-auto max-md:w-60 md:w-80 text-left relative">
+                  <label htmlFor="username" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${username ? "-translate-y-6" : "-translate-y-0"}`}>Felhasználónév</label>
+                  <input id="username" value={username} onChange={(e) => setUsername(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${username ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="text" maxLength={25} />
+                  <div className="username-line" />
               </div>
-              <div>
-                <p className="">Email cím</p>
-                <input className="bg-n-5 rounded-md text-center mb-5" type="text" />
+              <div className="mb-10 password group mx-auto max-md:w-60 md:w-80 text-left relative">
+                  <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
+                  <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${password ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="password" maxLength={25} />
+                  <div className="password-line" />
               </div>
-              <div>
-                <p className="">Jelszó</p>
-                <input className="bg-n-5 rounded-md text-center mb-5" type="password" />
+              <div className="mb-10 password group mx-auto max-md:w-60 md:w-80 text-left relative">
+                  <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
+                  <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${password ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="password" maxLength={25} />
+                  <div className="password-line" />
               </div>
-              <div>
-                <p className="">Jelszó megerősítés</p>
-                <input className="bg-n-5 rounded-md text-center mb-5" type="password" />
+              <div className="mb-10 password group mx-auto max-md:w-60 md:w-80 text-left relative">
+                  <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
+                  <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80 ${password ? "cursor-text pointer-events-auto" : "cursor-default pointer-events-none"}`} type="password" maxLength={25} />
+                  <div className="password-line" />
               </div>
-              <div className="mb-2">
-                  <input id="link-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600" />
-                  <label for="link-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Elfogadom a <a href="#" class="text-blue-600 dark:text-blue-500 hover:underline">szerződési feltételeket</a>.</label>
+              {error && <p className="text-red-500">{error}</p>}
+              <div className="button hidden lg:block mb-1">
+                  <Button type="submit">Fiók létrehozása</Button>
               </div>
-              <Button className="">Regisztráció</Button>
+              </form>
             </div>
           </div>
         </div>
-
-        <Gradient />
+        <GradientBottom />
       </div>
-
-      <BackgroundCircles></BackgroundCircles>
+      <BackgroundCircles />
     </div>
     </Section>
   );
