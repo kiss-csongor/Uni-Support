@@ -11,7 +11,7 @@ export const Gradient = () => {
     </>
   );
 };
-export const LoginGradientTop = () => {
+export const GradientTop = () => {
   return (
     <>
       <div className="relative z-1 h-[1rem] mx-6 bg-n-6/70 shadow-xl rounded-t-[1.25rem] lg:mx-20 border-t-[1px] border-n-1" />
@@ -19,7 +19,7 @@ export const LoginGradientTop = () => {
     </>
   );
 };
-export const LoginGradientBottom = () => {
+export const GradientBottom = () => {
   return (
     <>
       <div className="relative z-1 h-[1rem] mx-2.5 bg-n-6/80 shadow-xl rounded-b-[1.25rem] lg:mx-8 border-b-[1px] border-n-1" />

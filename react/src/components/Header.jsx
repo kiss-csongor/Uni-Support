@@ -7,9 +7,12 @@ import { useState } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import sze_fekvo_logo from '../assets/own/sze_fekvo_logo.png'
 import '../css/Header.css';
+import { useAuth } from '../context/AuthContext'
+import 'boxicons'
 
 const Header = () => {
     const pathname = useLocation();
+    const { isLoggedIn, logout } = useAuth();
     const [openNavigation, setOpenNavigation] = useState(false);
 
     const toggleNavigation = () => {
@@ -45,12 +48,26 @@ const Header = () => {
                 </div>
                 <HamburgerMenu />
             </nav>
-            <div className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
-                <Link to="/signup">Regisztráció</Link>
-            </div>
-            <Button className="hidden lg:flex">
-                <Link to="/signin">Bejelentkezés</Link>
-            </Button>
+            {!isLoggedIn && (
+                <>
+                    <div className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
+                        <Link to="/signup">Regisztráció</Link>
+                    </div>
+                    <Button className="hidden lg:flex">
+                        <Link to="/signin">Bejelentkezés</Link>
+                    </Button>
+                </>
+            )}
+            {isLoggedIn && (
+                <>
+                    <Button className="hidden lg:flex" onClick={logout}>
+                        Kijelentkezés
+                    </Button>
+                </>
+                
+            )}
+
+
             <Button onClick={toggleNavigation} className="ml-auto lg:hidden" px="px-3">
                 <MenuSvg openNavigation={openNavigation} />
             </Button>

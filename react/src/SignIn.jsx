@@ -1,5 +1,4 @@
 import ButtonGradient from "./assets/svg/ButtonGradient";
-import Button from "./components/Button";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./components/Login";

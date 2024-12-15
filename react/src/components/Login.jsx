@@ -2,32 +2,35 @@ import React, { useState } from "react";
 import '../css/Login.css'
 import Section from "./Section";
 import Button from "./Button";
-import { BackgroundCircles,  LoginGradientBottom, LoginGradientTop } from "./design/Hero";
+import { BackgroundCircles,  GradientBottom, GradientTop } from "./design/Hero";
 import { Link } from "react-router-dom";
 import axios from "axios"; // Axios HTTP kliens importálása
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
-const Register = () => {
-
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const { login, isLoggedIn } = useAuth(); // Auth állapot kezelése
+  const navigate = useNavigate();
+
   const handleLogin = async (e) => {
     e.preventDefault();
-    
     try {
       const response = await axios.post("https://uni-support.sytes.net/api/login/", {
-        username: username,
-        password: password
+        username,
+        password,
       });
 
-      // Sikeres bejelentkezés, átirányítás
       if (response.status === 200) {
-        console.log('gratula'); // Példa: átirányítás a főoldalra
+        login();
+        navigate('/new-ticket')
+        console.log("Sikeres bejelentkezés! ");
       }
-    } catch (err) {
-      // Hibakezelés
-      setError("Hibás felhasználónév vagy jelszó");
+    } catch {
+      setError("Hibás felhasználónév vagy jelszó!");
     }
   };
 
@@ -35,7 +38,7 @@ const Register = () => {
     <Section className='bg-image'>
     <div className="relative max-w-[25rem] mx-auto md:max-w-2xl xl:mb-24 max-h-screen max-sm:mt-10 sm:mt-10">
       <div className="relative z-1 p-0.5 rounded-2xl">
-      <LoginGradientTop />
+      <GradientTop />
         <div className="relative rounded-[1rem] border-solid border-[2px] backdrop-blur-sm">
           <div/>
           <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[320/450] sm:aspect-[320/450]">
@@ -56,23 +59,23 @@ const Register = () => {
                     <div className="group-focus-within:hidden password-line" />
                 </div>
               </div>
-              <div className="button hidden text-n-1/50 transition-colors hover:text-n-1 lg:block mb-1">
-                    <Link >Elfelejtett jelszó</Link>
+              <div className="button hidden lg:block mb-1">
+                  <Link className="text-n-1/50 transition-colors hover:text-n-1" >Elfelejtett jelszó</Link>
               </div>
               {error && <p className="text-red-500">{error}</p>}
-              <Button type="submit">Bejelentkezés</Button>
+              <div className="button hidden lg:block mb-1">
+                  <Button type="submit">Bejelentkezés</Button>
+              </div>
               </form>
             </div>
           </div>
         </div>
-
-        <LoginGradientBottom />
+        <GradientBottom />
       </div>
-
-      <BackgroundCircles></BackgroundCircles>
+      <BackgroundCircles />
     </div>
     </Section>
   );
 };
 
-export default Register;
+export default Login;
