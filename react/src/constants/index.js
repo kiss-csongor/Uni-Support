@@ -52,7 +52,36 @@ import {
   sze_fekvo_logo,
 } from "../assets";
 
-export const navigation = [
+export const isLoggedInNavigation = [
+  {
+    id: "0",
+    title: "Főoldal",
+    url: "/",
+  },
+  {
+    id: "1",
+    title: "Jegy felvétele",
+    url: "/new-ticket",
+  },
+  {
+    id: "2",
+    title: "Jegyeim",
+    url: "/my-tickets",
+  },
+  {
+    id: "3",
+    title: "FAQ",
+    url: "/faq",
+  },
+  {
+    id: "6",
+    title: "Kijelentkezés",
+    url: "",
+    onlyMobile: true,
+  },
+];
+
+export const isLoggedOutNavigation = [
   {
     id: "0",
     title: "Főoldal",

@@ -3,7 +3,6 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Login from "./components/Login";
 
-
 import React from "react";
 
 const SignIn = () => {
@@ -15,7 +14,6 @@ const SignIn = () => {
         <Login />
         <Footer />
       </div>
-
     </>
   );
 };
