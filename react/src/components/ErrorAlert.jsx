@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
 const ErrorMessage = ({ message }) => {
-  const [showError, setShowError] = useState(0);
+  const [showError, setShowError] = useState(""); // bool típusú állapot
 
   useEffect(() => {
     if (message) {
       setShowError(true);
       const timer = setTimeout(() => {
-        setShowError(false);
+        setShowError("");
       }, 3000);  // 3 másodperc után eltűnik a hibaüzenet
-      return () => clearTimeout(timer);
+      return () => clearTimeout(timer); // Töröljük a timeoutot, ha a komponens eltűnik
     }
   }, [message]);
 

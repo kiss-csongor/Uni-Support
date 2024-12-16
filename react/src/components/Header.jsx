@@ -76,9 +76,11 @@ const Header = () => {
                         <div className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
                             <Link to="/signup">Regisztráció</Link>
                         </div>
-                        <Button className="hidden lg:flex">
-                            <Link to="/signin">Bejelentkezés</Link>
-                        </Button>
+                        <Link to="/signin">
+                            <Button className="hidden lg:flex">
+                                Bejelentkezés
+                            </Button>
+                        </Link>
                     </>
                 )}
                 {isLoggedIn && (
