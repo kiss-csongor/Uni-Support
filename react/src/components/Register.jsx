@@ -35,17 +35,7 @@ const Register = () => {
       if (response.status === 201) {
         setSucces('Sikeresen regisztráció.')
         await sleep(2000)
-        const response = await axios.post("http://localhost:8000/api/login/", {
-          username,
-          password,
-        });
-
-        if (response.status === 200) {
-          login();
-          setSucces('Sikeresen bejelentkezés.')
-          await sleep(3000)
-          navigate('/')
-        } 
+        navigate('/signin')
       }
     } catch(err) {
       setError(err.response.data.non_field_errors);
