@@ -26,7 +26,7 @@ const Register = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:8000/api/register/", {
+      const response = await axios.post("https://uni-support.sytes.net/api/register/", {
         username,
         email,
         password,
