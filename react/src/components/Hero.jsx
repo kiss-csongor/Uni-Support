@@ -15,8 +15,9 @@ const Hero = () => {
     const parallaxRef = useRef(null);
 
   return (
+    <>
     <Section
-      className="pt-[6rem] -mt-[5.25] pb-20"
+      className="pt-[6rem] -mt-[5.25] pb-20 over"
       crosses
       crossesOffset="lg:translate-y-[5.25]"
       customPaddings
@@ -91,6 +92,7 @@ const Hero = () => {
       </div>
       <BottomLine />
     </Section>
+    </>
   );
 };
 

@@ -10,6 +10,9 @@ export default {
   ],
   theme: {
     extend: {
+      mixBlendMode: {
+        "destination-out": "destination-out",
+      },
       colors: {
         color: {
           1: "#AC6AFF",

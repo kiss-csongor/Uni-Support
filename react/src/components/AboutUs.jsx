@@ -8,7 +8,7 @@ import { Link } from 'react-router-dom';
 
 const AboutUs = () => {
     return (
-      <Section  crosses id="about-us">
+      <Section crosses id="about-us">
           <div className="container relative z-2">
   
               <Heading className="md:max-w-md lg:max-w-2xl" title="Oldalunkon leggyakrabban ismételt kérdések" />
