@@ -8,15 +8,23 @@ import Footer from './components/Footer';
 import Test2 from './Test2';
 
 const Home = () => {
-  const [circleSize, setCircleSize] = useState(50);
+  const [circleSize, setCircleSize] = useState(0);
 
   const handleWheel = (event) => {
     if (circleSize >= 1000) {
-      // Ha a kör mérete >= 1000, akkor változtathatjuk a méretét
-      if (event.deltaY > 0) {
-        setCircleSize((prevSize) => Math.max(50, prevSize - 10)); // Csökkentés
+
+      if (event.deltaY < 0) {
+        if (circleSize < 115) {
+          setCircleSize((prevSize) => Math.max(0, prevSize - 15));
+        } else {
+          setCircleSize((prevSize) => Math.max(0, prevSize - 50));
+        }
       } else if(event.deltaY > 0) {
-        setCircleSize((prevSize) => prevSize + 10); // Növelés
+        if (circleSize < 115) {
+          setCircleSize((prevSize) => prevSize + 15);
+        } else {
+          setCircleSize((prevSize) => prevSize + 50);
+        }
       }
     } else {
       // Ha a kör mérete < 1000, akkor letiltjuk az oldal görgetését
