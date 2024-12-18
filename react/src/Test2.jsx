@@ -20,7 +20,7 @@ const Test2 = ({ circleSize, setCircleSize }) => {
   };
 
   return (
-    <div className={`fixed top-0 left-0 z-20 w-full h-screen`} onWheel={handleWheel}>
+    <div className="fixed top-0 left-0 z-20 w-full h-screen max-md:hidden" onWheel={handleWheel}>
       
       <div
         className="fixed top-0 left-0 w-full h-screen bg-cover bg-center bg-black"
