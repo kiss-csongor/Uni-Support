@@ -1,7 +1,7 @@
-# Dockerfile-backend
+# Python környezet telepítése
 FROM python:3.10-slim
 
-# Alapbeállítások
+# Környezet alapbeállításai
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 

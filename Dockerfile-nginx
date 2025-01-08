@@ -1,4 +1,4 @@
-# Alap image: Nginx
+# Fő webszerver futtatása Nginx-ben
 FROM nginx:alpine
 
 # Portok megnyitása

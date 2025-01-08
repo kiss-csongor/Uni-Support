@@ -5,7 +5,7 @@ FROM node:22.11.0 AS build
 WORKDIR /app
 
 # NPM csomagok telepítése
-# Másold a react mappában lévő package.json és package-lock.json fájlokat
+# A react mappában lévő package.json és package-lock.json fájlok másolása
 COPY react/package.json react/package-lock.json ./ 
 
 # NPM csomagok telepítése
@@ -14,10 +14,10 @@ RUN npm install
 # A React alkalmazás forráskódjának másolása
 COPY react/ /app/
 
-# React alkalmazás építése
+# React alkalmazás buildelése
 RUN npm run build
 
-# Alap image: Nginx
+# A fejlesztéshez és teszteléshez használatos webszerver futtatása
 FROM nginx:alpine
 
 ARG CACHE_BUST=1
