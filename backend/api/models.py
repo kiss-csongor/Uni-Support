@@ -4,8 +4,12 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=False, blank=False)
-    phone_number = models.CharField(max_length=20 ,null=True, blank=True)
+    full_name = models.CharField(max_length=60, null=True, blank=True)
+    mothers_name = models.CharField(max_length=60, null=True, blank=True)
+    phone_number = models.CharField(max_length=20 , null=True, blank=True)
     neptun_code = models.CharField(max_length=6 ,null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    authenticated = models.BooleanField(default=False)
 
     def __str__(self):
         return self.user.username
@@ -59,3 +63,9 @@ class Comment(models.Model):
 
     def __str__(self):
         return f'{self.sender} kommentje a {self.post.id}. számú poszt alatt'
+    
+class NeptunData(models.Model):
+    neptun_code = models.CharField(max_length=6 ,null=True, blank=True)
+    birth_date = models.DateField(null=True, blank=True)
+    full_name = models.CharField(max_length=255)
+    mothers_name = models.CharField(max_length=255)

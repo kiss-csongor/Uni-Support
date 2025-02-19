@@ -38,7 +38,7 @@ const Header = () => {
     const handleLogout = async () => {
         setSucces("Sikeresen kijelentkezett.");
         await new Promise((resolve) => setTimeout(resolve, 3000));
-        logout(); // Felhasználó kijelentkeztetése
+        logout();
     }
 
   return (

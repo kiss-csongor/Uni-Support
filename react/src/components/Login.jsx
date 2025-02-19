@@ -4,7 +4,7 @@ import Section from "./Section";
 import Button from "./Button";
 import { BackgroundCircles,  GradientBottom, GradientTop } from "./design/Hero";
 import { Link } from "react-router-dom";
-import axios from "axios"; // Axios HTTP kliens importálása
+import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import ErrorAlert from './ErrorAlert';
@@ -24,7 +24,7 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://uni-support.sytes.net/api/login/", {
+      const response = await axios.post("http://localhost:8000/api/login/", { 
         username,
         password,
       });

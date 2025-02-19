@@ -74,6 +74,11 @@ export const isLoggedInNavigation = [
     url: "/faq",
   },
   {
+    id: "4",
+    title: "Profil",
+    url: "/profile",
+  },
+  {
     id: "6",
     title: "Kijelentkezés",
     url: "",
