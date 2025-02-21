@@ -94,27 +94,22 @@ export const isLoggedOutNavigation = [
   },
   {
     id: "1",
-    title: "Jegy felvétele",
-    url: "/new-ticket",
-  },
-  {
-    id: "2",
-    title: "Jegyeim",
-    url: "/my-tickets",
-  },
-  {
-    id: "3",
     title: "FAQ",
     url: "/faq",
   },
   {
-    id: "4",
+    id: "2",
+    title: "Chatbot",
+    url: "/chatbot",
+  },
+  {
+    id: "3",
     title: "Új fiók",
     url: "/signup",
     onlyMobile: true,
   },
   {
-    id: "5",
+    id: "4",
     title: "Bejelentkezés",
     url: "/signin",
     onlyMobile: true,

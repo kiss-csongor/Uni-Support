@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import '../css/Login-Register.css'
+import '../css/Login-Register.css';
 import Section from "./Section";
 import Button from "./Button";
 import { BackgroundCircles, GradientBottom, GradientTop } from "./design/Hero";

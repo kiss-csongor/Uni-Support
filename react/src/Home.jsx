@@ -5,7 +5,7 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import AboutUs from './components/AboutUs';
 import Footer from './components/Footer';
-import Test2 from './Test2';
+import Test2 from './components/Test2';
 
 const Home = () => {
   const [circleSize, setCircleSize] = useState(0);
@@ -51,7 +51,7 @@ const Home = () => {
     <>
       <div className='pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden'>
         <Header />
-        <Test2 circleSize={circleSize} setCircleSize={setCircleSize} /> {/* Átadjuk a circleSize-t és setCircleSize-t a Test2-nek */}
+        <Test2 circleSize={circleSize} setCircleSize={setCircleSize} />
         <Hero />
         <AboutUs />
         <Footer />
