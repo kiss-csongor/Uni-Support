@@ -4,11 +4,16 @@ from .models import UserProfile
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
-class UserSerializer(serializers.ModelSerializer):
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = '__all__'
         depth = 1 
+
+    def validate_birth_date(self, value):
+        if value == '':
+            return None
+        return value
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()

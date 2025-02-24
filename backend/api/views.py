@@ -4,7 +4,32 @@ from .serializers import *
 from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile
 
-class UserDetailView(generics.GenericAPIView):
+class UpdateUserProfileView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def put(self, request):
+        username = request.data.get("username")
+        if not username:
+            return Response({"error": "Username is required"}, status=400)
+
+        try:
+            profile = UserProfile.objects.get(user__username=username)
+        except UserProfile.DoesNotExist:
+            return Response({"error": "User profile not found"}, status=404)
+        
+        birth_date = request.data.get('birth_date')
+        if birth_date == '':
+            request.data['birth_date'] = None
+
+        serializer = self.get_serializer(profile, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserProfileView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
@@ -14,7 +39,7 @@ class UserDetailView(generics.GenericAPIView):
 
         try:
             profile = UserProfile.objects.get(user__username=username)
-            serializer = UserSerializer(profile)
+            serializer = UserProfileSerializer(profile)
             return Response(serializer.data)
         except UserProfile.DoesNotExist:
             return Response({"error": "User profile not found"}, status=404)

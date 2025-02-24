@@ -9,6 +9,7 @@ class UserProfile(models.Model):
     phone_number = models.CharField(max_length=20 , null=True, blank=True)
     neptun_code = models.CharField(max_length=6 ,null=True, blank=True)
     birth_date = models.DateField(null=True, blank=True)
+    birth_place = models.CharField(max_length=30, null=True, blank=True)
     authenticated = models.BooleanField(default=False)
 
     def __str__(self):
