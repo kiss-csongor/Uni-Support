@@ -2,6 +2,13 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
 from .models import UserProfile
 from rest_framework import serializers
+from rest_framework_simplejwt.tokens import RefreshToken
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
+        depth = 1 
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -15,6 +22,10 @@ class LoginSerializer(serializers.Serializer):
 
         if user is None:
             raise serializers.ValidationError("Nem tartozik a hitelesítési adatokhoz felhasználó")
+        
+        refresh = RefreshToken.for_user(user)
+        data['token'] = str(refresh.access_token)
+        data['user'] = user
         
         return data
     

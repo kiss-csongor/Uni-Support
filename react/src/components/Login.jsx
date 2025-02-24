@@ -24,18 +24,19 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("https://uni-support.sytes.net/api/login/", { 
+      const response = await axios.post("http://localhost:8000/api/login/", { 
         username,
         password,
       });
-
+  
       if (response.status === 200) {
-        login();
-        setSucces('Sikeresen bejelentkezés.')
+        const { token, user } = response.data;
+  
+        setSucces('Sikeresen bejelentkezés.');
+        login(token, user)
 
-        await sleep(3000)
-
-        navigate('/') 
+        await sleep(3000);
+        navigate('/');
       } 
     } catch(err) {
       setError(err.response.data.non_field_errors);

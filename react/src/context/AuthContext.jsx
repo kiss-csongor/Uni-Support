@@ -4,28 +4,42 @@ import Cookies from "js-cookie";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
-    // A cookie-ban tárolt bejelentkezési információ ellenőrzése
-    useEffect(() => {
-      const storedStatus = Cookies.get("isLoggedIn"); // Lekérjük a cookie-t
-      if (storedStatus === "true") {
-        setIsLoggedIn(true);  // Ha van, akkor bejelentkezett státusz
-      }
-    }, []);
+  // Bejelentkezési állapot ellenőrzése a sessionStorage-ból
+  useEffect(() => {
+    const storedToken = sessionStorage.getItem("token");
+    const storedUser = sessionStorage.getItem("user");
 
-    const login = () => {
-      setIsLoggedIn(true);
-      Cookies.set("isLoggedIn", "true", { expires: 7 });  // 7 napra tároljuk el a cookie-t
-    };
-  
-    const logout = () => {
-      setIsLoggedIn(false);
-      Cookies.set("isLoggedIn", "false", { expires: 7 });  // 7 napra tároljuk el a cookie-t
-    };
+    if (storedToken && storedUser) {
+      setToken(storedToken);
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  // Bejelentkezés
+  const login = (token, user) => {
+    setToken(token);
+    setUser(user);
+
+    // Adatok elmentése localStorage-ba
+    sessionStorage.setItem("token", token);
+    sessionStorage.setItem("user", JSON.stringify(user));
+  };
+
+  // Kijelentkezés
+  const logout = () => {
+    setToken(null);
+    setUser(null);
+
+    // Adatok törlése a localStorage-ból
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("user");
+  };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, login, logout }}>
+    <AuthContext.Provider value={{ user, token, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
