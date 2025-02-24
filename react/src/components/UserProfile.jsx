@@ -231,8 +231,8 @@ const UserProfile = () => {
                   placeholder="Doboz"
                 />
               ) : (
-                <p className={`mt-1 text-lg font-semibold ${user?.birth_date ? "text-gray-900" : "text-gray-900/40"}`}>
-                    {user?.birth_date ? user.birth_date : "Doboz"}
+                <p className={`mt-1 text-lg font-semibold ${user?.birth_place ? "text-gray-900" : "text-gray-900/40"}`}>
+                    {user?.birth_place ? user.birth_place : "Doboz"}
                 </p>
               )}
             </div>
