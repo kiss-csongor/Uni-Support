@@ -34,7 +34,9 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.post(`http://localhost:8000/api/get-user/`, 
+        const response = await axios.post(
+         // `http://localhost:8000/api/get-user/`,
+         `https://uni-support.sytes.net/api/get-user/`, 
           { username },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -110,7 +112,8 @@ const UserProfile = () => {
 
     try {
       const response = await axios.put(
-        `http://localhost:8000/api/update-user/`,
+        // `http://localhost:8000/api/update-user/`,
+        `https://uni-support.sytes.net/api/update-user/`,
         { ...formData, username },
         { headers: {Authorization: `Bearer ${token}`} }
       );

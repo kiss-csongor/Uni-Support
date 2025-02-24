@@ -34,7 +34,10 @@ const Register = () => {
 
     try {
       // API hívás a regisztrációhoz
-      const response = await axios.post("https://uni-support.sytes.net/api/register/", {
+      const response = await axios.post(
+        // "http://localhost:8000/api/register/",
+        "https://uni-support.sytes.net/api/register/",
+      {
         username,
         email,
         password,
