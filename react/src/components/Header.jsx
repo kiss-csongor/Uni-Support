@@ -16,7 +16,6 @@ const Header = () => {
 
     const pathname = useLocation();
     const { user, logout } = useAuth();
-    console.log(user)
     const [openNavigation, setOpenNavigation] = useState(false);
 
     const toggleNavigation = () => {
