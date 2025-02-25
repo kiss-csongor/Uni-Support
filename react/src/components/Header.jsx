@@ -13,6 +13,7 @@ import SuccesAlert from './SuccesAlert'
 
 const Header = () => {
     const [succes, setSucces] = useState("");
+    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const pathname = useLocation();
     const { user, logout } = useAuth();
@@ -36,8 +37,10 @@ const Header = () => {
     };
 
     const handleLogout = async () => {
+        enablePageScroll();
+        setOpenNavigation(false);
         setSucces("Sikeresen kijelentkezett.");
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+        await sleep(3000);
         logout();
     }
 
@@ -53,7 +56,7 @@ const Header = () => {
                     {user && (
                         <>
                             {isLoggedInNavigation.map((item) => (
-                                <Link to={item.url} onClick={handleClick} key={item.id} className={` block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.pathname ? 'z-2 lg:text-n-1 link-line-active' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-15 link-line`}>
+                                <Link to={item.url} onClick={item.title === "Kijelentkezés" ? handleLogout : handleClick} key={item.id} className={` block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.pathname ? 'z-2 lg:text-n-1 link-line-active' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-15 link-line`}>
                                     {item.title}
                                 </Link>
                             ))}

@@ -11,39 +11,44 @@ import ErrorAlert from './ErrorAlert';
 import SuccesAlert from './SuccesAlert';
 
 const Register = () => {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [passwordAgain, setPasswordAgain] = useState("");
   const [error, setError] = useState("");
   const [succes, setSucces] = useState("");
-
-  const { login } = useAuth();
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    passwordAgain: "",
+  })
   const navigate = useNavigate();
-
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const handleError = async (message) => {
+    setError(message);
+    await sleep(5000);
+    setError("");
+  };
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setFormData((prev) => ({ ...prev, [id]: value }));
+  };
 
+  const handleLogin = async () => {
     // Ha a két jelszó nem egyezik
-    if (password !== passwordAgain) {
-      setError("A mezőbe írt jelszó páros nem egyezik meg.");
+    if (formData.password !== formData.passwordAgain) {
+      handleError("A mezőbe írt jelszó páros nem egyezik meg.")
       return;      
     }
 
     try {
-      // API hívás a regisztrációhoz
       const response = await axios.post(
         // "http://localhost:8000/api/register/",
         "https://uni-support.sytes.net/api/register/",
       {
-        username,
-        email,
-        password,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
       });
 
-      // Ha sikeres a regisztráció
       if (response.status === 201) {
         setSucces('Sikeres regisztráció.');
         await sleep(2000);
@@ -66,13 +71,12 @@ const Register = () => {
             <div className="rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] max-sm:aspect-[320/450] sm:aspect-[320/450]">
               <div className="mx-auto mt-5 mb-5 text-center items-center">
                 <p className="text-2xl rounded-b-md rounded-t-md mx-auto max-sm:mb-12 mb-14 max-w-64 font-extrabold uppercase">Regisztráció</p>
-                <form onSubmit={handleLogin}>
                   <div className="mb-10 username group mx-auto max-md:w-60 md:w-80 text-left relative">
-                    <label htmlFor="username" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${username ? "-translate-y-6" : "-translate-y-0"}`}>Felhasználónév</label>
+                    <label htmlFor="username" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${formData.username ? "-translate-y-6" : "-translate-y-0"}`}>Felhasználónév</label>
                     <input
                       id="username"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
+                      value={formData.username}
+                      onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="text"
                       maxLength={25}
@@ -80,11 +84,11 @@ const Register = () => {
                     <div className="line" />
                   </div>
                   <div className="mb-10 email group mx-auto max-md:w-60 md:w-80 text-left relative">
-                    <label htmlFor="email" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${email ? "-translate-y-6" : "-translate-y-0"}`}>Email cím</label>
+                    <label htmlFor="email" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${formData.email ? "-translate-y-6" : "-translate-y-0"}`}>Email cím</label>
                     <input
                       id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      value={formData.email}
+                      onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="email"
                       maxLength={25}
@@ -92,11 +96,11 @@ const Register = () => {
                     <div className="line" />
                   </div>
                   <div className="mb-10 password group mx-auto max-md:w-60 md:w-80 text-left relative">
-                    <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
+                    <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${formData.password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
                     <input
                       id="password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      value={formData.password}
+                      onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="password"
                       maxLength={25}
@@ -104,11 +108,11 @@ const Register = () => {
                     <div className="line" />
                   </div>
                   <div className="mb-6 passwordAgain group mx-auto max-md:w-60 md:w-80 text-left relative">
-                    <label htmlFor="passwordAgain" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${passwordAgain ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó megerősítés</label>
+                    <label htmlFor="passwordAgain" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${formData.passwordAgain ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó megerősítés</label>
                     <input
                       id="passwordAgain"
-                      value={passwordAgain}
-                      onChange={(e) => setPasswordAgain(e.target.value)}
+                      value={formData.passwordAgain}
+                      onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="password"
                       maxLength={25}
@@ -116,12 +120,11 @@ const Register = () => {
                     <div className="line" />
                   </div>
                   <div className="button block mb-1">
-                    <Button type="submit">Fiók létrehozása</Button>
+                    <Button type="submit" onClick={handleLogin}>Fiók létrehozása</Button>
                   </div>
                   <div className="button mb-1">
                     <Link to="/signin" className="text-n-2 transition-colors hover:text-n-1">Van már fiókod?</Link>
                   </div>
-                </form>
               </div>
             </div>
           </div>

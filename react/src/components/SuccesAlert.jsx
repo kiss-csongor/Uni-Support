@@ -15,7 +15,7 @@ const SuccesMessage = ({ message }) => {
 
   return (
     <div
-      className={`z-10 fixed top-1/2 left-1/2 transform bg-green-700/95 text-white p-4 rounded-lg shadow-lg transition-all duration-1000 ease-in-out`}
+      className={`z-50 fixed top-1/2 left-1/2 transform bg-green-700/95 text-white p-4 rounded-lg shadow-lg transition-all duration-1000 ease-in-out`}
       style={{
         opacity: showSucces ? 1 : 0,
         transform: showSucces ? 'translate(-50%, -50%)' : 'translate(-50%, -100%)',

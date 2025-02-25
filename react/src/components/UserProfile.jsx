@@ -84,10 +84,10 @@ const UserProfile = () => {
 
   const handleValidationError = async (message) => {
     setError(message);
-    setIsButtonDisabled(true);  // Gomb letiltása
-    await sleep(5000);  // Várakozás 5 másodpercig
-    setError("");  // Hibaüzenet törlése
-    setIsButtonDisabled(false);  // Gomb engedélyezése
+    setIsButtonDisabled(true);
+    await sleep(5000);
+    setError("");
+    setIsButtonDisabled(false);
   };
 
   const handleUserDataValidation = async () => {
