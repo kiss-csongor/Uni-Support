@@ -48,10 +48,9 @@ const UserProfile = () => {
       }
 
       try {
-        const response = await axios.post(
-          `https://uni-support.sytes.net/api/get-user/`,
-          // `http://localhost:8000/api/get-user/`,
-          { username },
+        const response = await axios.get(
+          // `https://uni-support.sytes.net/api/get-user/`,
+          `http://localhost:8000/api/get-user/`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
 
@@ -151,8 +150,8 @@ const UserProfile = () => {
 
     try {
       const response = await axios.post(
-        `https://uni-support.sytes.net/api/validate-user/`,
-        // `http://localhost:8000/api/validate-user/`,
+        // `https://uni-support.sytes.net/api/validate-user/`,
+        `http://localhost:8000/api/validate-user/`,
         { username, password },
         { headers: {Authorization: `Bearer ${token}`} }
       );
@@ -173,8 +172,8 @@ const UserProfile = () => {
 
     try {
       const response = await axios.put(
-        `https://uni-support.sytes.net/api/update-user/`,
-        // `http://localhost:8000/api/update-user/`,
+        // `https://uni-support.sytes.net/api/update-user/`,
+        `http://localhost:8000/api/update-user/`,
         { ...formData, username },
         { headers: {Authorization: `Bearer ${token}`} }
       );
@@ -195,8 +194,8 @@ const UserProfile = () => {
 
     try {
       const response = await axios.put(
-        `https://uni-support.sytes.net/api/update-user-profile/`,
-        // `http://localhost:8000/api/update-user-profile/`,
+        // `https://uni-support.sytes.net/api/update-user-profile/`,
+        `http://localhost:8000/api/update-user-profile/`,
         { ...formData, username },
         { headers: {Authorization: `Bearer ${token}`} }
       );

@@ -71,13 +71,10 @@ class UpdateUserProfileView(generics.GenericAPIView):
 class GetUserProfileView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request):
-        username = request.data.get("username")
-        if not username:
-            return Response({"error": "Username is required"}, status=400)
-
+    def get(self, request):
         try:
-            profile = UserProfile.objects.get(user__username=username)
+            print(request.user)
+            profile = UserProfile.objects.get(user__username=request.user)
             serializer = UserProfileSerializer(profile)
             return Response(serializer.data)
         except UserProfile.DoesNotExist:
