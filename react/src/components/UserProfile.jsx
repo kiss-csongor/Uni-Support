@@ -49,8 +49,8 @@ const UserProfile = () => {
 
       try {
         const response = await axios.post(
-          // `https://uni-support.sytes.net/api/get-user/`,
-          `http://localhost:8000/api/get-user/`,
+          `https://uni-support.sytes.net/api/get-user/`,
+          // `http://localhost:8000/api/get-user/`,
           { username },
           { headers: { Authorization: `Bearer ${token}` } }
         );
