@@ -151,14 +151,14 @@ const UserProfile = () => {
 
     try {
       const response = await axios.post(
-        `https://uni-support.sytes.net/api/update-user/`,
+        `https://uni-support.sytes.net/api/validate-user/`,
         // `http://localhost:8000/api/validate-user/`,
         { username, password },
         { headers: {Authorization: `Bearer ${token}`} }
       );
       if (response.status === 200) {
         setFormData({ password: authData.new_password });
-        handleLoginDataSave();
+        handleLoginDataSave()
       }
     } catch (err) { 
         setError("Hibás autentikációs adatok.");
@@ -178,8 +178,6 @@ const UserProfile = () => {
         { ...formData, username },
         { headers: {Authorization: `Bearer ${token}`} }
       );
-      setUser(response.data);
-      setIsEditing(false);
       setError("");
       setSucces("Adatait sikeresen frissítettük.")
       await sleep(5000);
@@ -197,7 +195,7 @@ const UserProfile = () => {
 
     try {
       const response = await axios.put(
-        `https://uni-support.sytes.net/api/update-user/`,
+        `https://uni-support.sytes.net/api/update-user-profile/`,
         // `http://localhost:8000/api/update-user-profile/`,
         { ...formData, username },
         { headers: {Authorization: `Bearer ${token}`} }
