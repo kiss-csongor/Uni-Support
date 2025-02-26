@@ -7,6 +7,8 @@ import SuccesAlert from './SuccesAlert';
 import UserData from './UserData';
 import LoginData from "./LoginData";
 import { CSSTransition } from 'react-transition-group';
+import Cookies from "js-cookie";
+import { refreshAccessToken } from "./RefreshAccessToken";
 
 const UserProfile = () => {
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -17,6 +19,7 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [dataVisualized, setDataVisualized] = useState("profileData");
+  const csrfToken = Cookies.get("csrftoken")
   const [formData, setFormData] = useState({
     full_name: "",
     phone_number: "",
@@ -40,14 +43,15 @@ const UserProfile = () => {
     const fetchUserData = async () => {
 
       try {
+        await refreshAccessToken();
+
         const response = await axios.get(
           // `https://uni-support.sytes.net/api/get-user/`,
           `http://localhost:8000/api/get-user/`,
-          { withCredentials: true },
+          { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
         );
 
         setUser(response.data);
-        console.log(response.data)
         setFormData({
           full_name: response.data.full_name,
           phone_number: response.data.phone_number,
@@ -136,16 +140,16 @@ const UserProfile = () => {
   }
 
   const handlePasswordValidation = async () => {
-    const token = sessionStorage.getItem("token");
-    const username = sessionStorage.getItem("user")?.replace(/['"]+/g, "");
     const password = authData.old_password
 
     try {
+      await refreshAccessToken();
+
       const response = await axios.post(
         // `https://uni-support.sytes.net/api/validate-user/`,
         `http://localhost:8000/api/validate-user/`,
-        { username, password },
-        { headers: {Authorization: `Bearer ${token}`} }
+        { password },
+        { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
       if (response.status === 200) {
         setFormData({ password: authData.new_password });
@@ -159,15 +163,14 @@ const UserProfile = () => {
   }
 
   const handleLoginDataSave = async () => {
-    const token = sessionStorage.getItem("token");
-    const username = sessionStorage.getItem("user")?.replace(/['"]+/g, "");
-
     try {
+      await refreshAccessToken();
+
       const response = await axios.put(
         // `https://uni-support.sytes.net/api/update-user/`,
         `http://localhost:8000/api/update-user/`,
-        { ...formData, username },
-        { headers: {Authorization: `Bearer ${token}`} }
+        { ...formData },
+        { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
       setError("");
       setSucces("Adatait sikeresen frissítettük.")
@@ -181,15 +184,15 @@ const UserProfile = () => {
   };
 
   const handleDataSave = async () => {
-    const token = sessionStorage.getItem("token");
-    const username = sessionStorage.getItem("user")?.replace(/['"]+/g, "");
 
     try {
+      await refreshAccessToken();
+
       const response = await axios.put(
         // `https://uni-support.sytes.net/api/update-user-profile/`,
         `http://localhost:8000/api/update-user-profile/`,
-        { ...formData, username },
-        { headers: {Authorization: `Bearer ${token}`} }
+        { ...formData },
+        { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
       setUser(response.data);
       setIsEditing(false);

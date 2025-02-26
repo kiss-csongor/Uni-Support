@@ -1,4 +1,5 @@
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.views import TokenRefreshView
 from django.middleware import csrf
 from rest_framework import status, generics
 from rest_framework.response import Response
@@ -16,6 +17,36 @@ def get_tokens_for_user(user):
         'access': str(refresh.access_token),
     }
 
+class RefreshTokenView(generics.GenericAPIView):
+    authentication_classes = [] 
+    permission_classes = []
+
+    def post(self, request, *args, **kwargs):
+        refresh_token = request.data.get("refresh_token")
+        if not refresh_token:
+            return Response({'error': 'Munkafolyamatod lejárt, jelentkezz be újra!'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            refresh = RefreshToken(refresh_token)
+            new_access_token = str(refresh.access_token)
+            new_refresh_token = str(refresh)
+
+            # Válasz előkészítése
+            response = Response({'message': 'Token refreshed successfully'}, status=status.HTTP_200_OK)
+
+            # Régi tokenek törlése
+            response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
+            response.delete_cookie("refresh_token")
+            response.delete_cookie("csrftoken")
+            
+            print("fasza")
+
+            
+            return response
+        except Exception as e:
+            print(e)
+            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
 class LoginView(generics.GenericAPIView):
     def post(self, request, format=None):
         data = request.data
@@ -26,37 +57,57 @@ class LoginView(generics.GenericAPIView):
 
         if user is not None:
             if user.is_active:
-                data = get_tokens_for_user(user)
-                response.set_cookie(
-                    key = settings.SIMPLE_JWT['AUTH_COOKIE'],
-                    value = data["access"],
-                    expires = settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
-                    secure = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-                    httponly = settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-                    samesite = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
-                )
-                csrf.get_token(request)
+                # Generálj egy refresh token-t és access token-t
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
 
+                # Set the access token as HttpOnly cookie
                 response.set_cookie(
-                    key="csrftoken",
-                    value=csrf.get_token(request),
-                    secure=settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'],
-                    httponly=False,  # A frontendnek hozzá kell férnie
+                    key=settings.SIMPLE_JWT['AUTH_COOKIE'],
+                    value=access_token,
+                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
                     samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
                 )
-                response.data = {"Success" : "Login successfully","data":data}
+
+                # Set the refresh token as HttpOnly cookie
+                response.set_cookie(
+                    key="refresh_token",
+                    value=refresh_token,
+                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=False,
+                    samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+                )
+
+                csrf.get_token(request)
+                
+                response.data = {"Success": "Login successful", "data": {"refresh_token": refresh_token}}
                 return response
             else:
-                return Response({"No active" : "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+                return Response({"No active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
         else:
-            return Response({"Invalid" : "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+        
+class LogoutView(generics.GenericAPIView):
+    authentication_classes = [] 
+    permission_classes = []
+
+    def post(self, request):
+        response = Response({"message": "Kijelentkezés sikeres"}, status=status.HTTP_200_OK)
+        response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
+        response.delete_cookie("refresh_token")
+        response.delete_cookie("csrftoken")
+        request.session.flush()
+        return response
 
 class GetUserProfileView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
         try:
-            print(request.user)
             profile = UserProfile.objects.get(user__username=request.user)
             serializer = UserProfileSerializer(profile)
             return Response(serializer.data)
@@ -80,8 +131,8 @@ class ValidateUserView(generics.GenericAPIView):
     serializer_class = UserProfileSerializer
 
     def post(self, request):
-        username = request.data.get("username")
         password = request.data.get("password")
+        username = request.user
 
         if not username or not password:  
             return Response({"error": "Bejelentkezés szükséges a folyamathoz."}, status=400)
@@ -99,7 +150,7 @@ class UpdateUserView(generics.GenericAPIView):
     serializer_class = UserSerializer
 
     def put(self, request):
-        username = request.data.get("username")
+        username = request.user
         if not username:
             return Response({"error": "Username is required"}, status=400)
 
@@ -119,7 +170,7 @@ class UpdateUserProfileView(generics.GenericAPIView):
     serializer_class = UserProfileSerializer
 
     def put(self, request):
-        username = request.data.get("username")
+        username = request.user
         if not username:
             return Response({"error": "Username is required"}, status=400)
 
