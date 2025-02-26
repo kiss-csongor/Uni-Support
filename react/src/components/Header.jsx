@@ -16,7 +16,7 @@ const Header = () => {
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const pathname = useLocation();
-    const { user, logout } = useAuth();
+    const { status , logout } = useAuth();
     const [openNavigation, setOpenNavigation] = useState(false);
 
     const toggleNavigation = () => {
@@ -53,7 +53,7 @@ const Header = () => {
                 </div>
                 <nav className={`${openNavigation ? 'flex' : 'hidden'} fixed top-[5rem] left-0 right-0 bottom-0 bg-n-8 lg:static lg:flex lg:mx-auto lg:bg-transparent`}>
                     <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
-                    {user && (
+                    {status === "in" && (
                         <>
                             {isLoggedInNavigation.map((item) => (
                                 <Link to={item.url} onClick={item.title === "Kijelentkezés" ? handleLogout : handleClick} key={item.id} className={` block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.pathname ? 'z-2 lg:text-n-1 link-line-active' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-15 link-line`}>
@@ -62,7 +62,7 @@ const Header = () => {
                             ))}
                         </>
                     )}
-                    {!user && (
+                    {status === "out" && (
                         <>
                             {isLoggedOutNavigation.map((item) => (
                                 <Link to={item.url} onClick={handleClick} key={item.id} className={` block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.pathname ? 'z-2 lg:text-n-1 link-line-active' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-15 link-line`}>
@@ -74,7 +74,7 @@ const Header = () => {
                     </div>
                     <HamburgerMenu />
                 </nav>
-                {!user && (
+                {status === "out" && (
                     <>
                         <div className="button hidden mr-8 text-n-1/50 transition-colors hover:text-n-1 lg:block">
                             <Link to="/signup">Regisztráció</Link>
@@ -86,7 +86,7 @@ const Header = () => {
                         </Link>
                     </>
                 )}
-                {user && (
+                {status === "in" && (
                     <>
                         <Button className="hidden lg:flex" onClick={handleLogout}>
                             Kijelentkezés

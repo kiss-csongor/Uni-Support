@@ -38,10 +38,10 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const username = sessionStorage.getItem("user")?.replace(/['"]+/g, "");
-      const token = sessionStorage.getItem("token");
+      const status = localStorage.getItem("status");
+      const token = localStorage.getItem("token")
 
-      if (!username || !token) {
+      if (status === "out" || !token) {
         setError("Nincs bejelentkezett felhasználó.");
         setLoading(false);
         return;

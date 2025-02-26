@@ -1,45 +1,41 @@
 import React, { createContext, useState, useContext, useEffect } from "react";
-import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [status, setStatus] = useState('in');
   const [token, setToken] = useState(null);
 
-  // Bejelentkezési állapot ellenőrzése a sessionStorage-ból
   useEffect(() => {
-    const storedToken = sessionStorage.getItem("token");
-    const storedUser = sessionStorage.getItem("user");
+    const storedStatus = localStorage.getItem("status");
+    const storedToken = localStorage.getItem("token")
 
-    if (storedToken && storedUser) {
+    if (storedStatus) {
+      setStatus(storedStatus);
+    } else {
+      localStorage.setItem("status", 'out');
+    }
+
+    if (storedToken) {
       setToken(storedToken);
-      setUser(JSON.parse(storedUser));
     }
   }, []);
 
-  // Bejelentkezés
-  const login = (token, user) => {
-    setToken(token);
-    setUser(user);
 
-    // Adatok elmentése localStorage-ba
-    sessionStorage.setItem("token", token);
-    sessionStorage.setItem("user", JSON.stringify(user));
+  const login = (token) => {
+    setStatus('in')
+    localStorage.setItem("status", 'in');
+    localStorage.setItem("token", token)
   };
 
-  // Kijelentkezés
   const logout = () => {
-    setToken(null);
-    setUser(null);
-
-    // Adatok törlése a localStorage-ból
-    sessionStorage.removeItem("token");
-    sessionStorage.removeItem("user");
+    setStatus('out')
+    localStorage.setItem("status", 'out');
+    localStorage.removeItem("token")
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, login, logout }}>
+    <AuthContext.Provider value={{ status, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

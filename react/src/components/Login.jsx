@@ -33,16 +33,13 @@ const Login = () => {
       });
   
       if (response.status === 200) {
-        const { token, user } = response.data;
-  
-        setSucces('Sikeresen bejelentkezés.');
-        login(token, user)
-
+        setSucces("Sikeresen bejelentkezett!");
+        login(response.data.token)
         await sleep(3000);
         navigate('/');
       } 
     } catch(err) {
-      setError(err.response.data.non_field_errors);
+      setError("Hib a bejelentkezés során");
     }
   };
 

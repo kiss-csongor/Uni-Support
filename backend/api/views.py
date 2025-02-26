@@ -84,14 +84,13 @@ class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
     def post(self, request):
+        print("fasza")
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             token = serializer.validated_data['token']
-            user = serializer.validated_data['user']
             return Response({
                 "message": "Bejelentkezés sikeres!",
                 "token": token,
-                "user": user.username,
             }, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
