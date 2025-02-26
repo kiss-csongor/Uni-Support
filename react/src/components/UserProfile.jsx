@@ -38,20 +38,12 @@ const UserProfile = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const status = localStorage.getItem("status");
-      const token = localStorage.getItem("token")
-
-      if (status === "out" || !token) {
-        setError("Nincs bejelentkezett felhasználó.");
-        setLoading(false);
-        return;
-      }
 
       try {
         const response = await axios.get(
           // `https://uni-support.sytes.net/api/get-user/`,
           `http://localhost:8000/api/get-user/`,
-          { headers: { Authorization: `Bearer ${token}` } }
+          { withCredentials: true },
         );
 
         setUser(response.data);

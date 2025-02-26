@@ -27,11 +27,13 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:8000/api/login/",
         // "https://uni-support.sytes.net/api/login/",
-      { 
-        username,
-        password,
-      });
-  
+        { 
+          username,
+          password,
+        },
+          { withCredentials: true }
+      );
+      console.log(response.data);
       if (response.status === 200) {
         setSucces("Sikeresen bejelentkezett!");
         login(response.data.token)
