@@ -14,7 +14,6 @@ import Chatbot from "./Chatbot.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
     <AuthProvider>
       <Router>
         <Routes>
@@ -30,5 +29,4 @@ createRoot(document.getElementById("root")).render(
         </Routes>
       </Router>
     </AuthProvider>
-  </StrictMode>
 );

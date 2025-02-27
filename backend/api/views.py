@@ -25,6 +25,31 @@ def invalid_token_delete(request):
     request.session.flush()
     return response
 
+def validate_neptun_code(profile):
+    try:
+        neptun_record = NeptunData.objects.filter(neptun_code=profile.neptun_code).first()
+
+        if not neptun_record:
+            return Response({"error": "Neptun kódja nem érvényes. Ellenőrizze és javítsa!"}, status=400)
+
+        if (
+            neptun_record.birth_date == profile.birth_date and
+            neptun_record.birth_place == profile.birth_place and
+            neptun_record.full_name == profile.full_name and
+            neptun_record.mothers_name == profile.mothers_name
+        ):
+            user_profile = UserProfile.objects.filter(user=profile.user).first()
+            if user_profile:
+                user_profile.authenticated = True
+                user_profile.save()
+            return Response({"success": "Sikeres hitelesítés. Most már létrehozhat hibajegy(ek)et, ha gondja merül fel."}, status=200)
+        else:
+            return Response({"error": "Adatai nem megfelelőek. Kérem ellenőrizze és javítsa azokat!"}, status=400)
+
+    except Exception as e:
+        return Response({"error": f"Hiba történt: {str(e)}"}, status=500)
+
+
 class RefreshTokenView(generics.GenericAPIView):
     authentication_classes = [] 
     permission_classes = []
@@ -131,26 +156,7 @@ class RegisterView(generics.GenericAPIView):
             serializer.create(validated_data=serializer.validated_data)
             return Response({"message": "Regisztráció sikeres!"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ValidateUserView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-    serializer_class = UserProfileSerializer
-
-    def post(self, request):
-        password = request.data.get("password")
-        username = request.user
-
-        if not username or not password:  
-            return Response({"error": "Bejelentkezés szükséges a folyamathoz."}, status=400)
-
-        user = authenticate(username=username, password=password)
-
-        if user is not None:
-            return Response({"success": "Sikeres autentikáció."}, status=200)
-        else:
-            return Response({"error": "Érvénytelen hitelesítési adatok."}, status=401)
-        
+       
 
 class UpdateUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
@@ -193,5 +199,56 @@ class UpdateUserProfileView(generics.GenericAPIView):
         serializer = self.get_serializer(profile, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
+            user_profile = UserProfile.objects.filter(user=profile.user).first()
+            user_profile.authenticated = False
+            user_profile.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ValidateUserView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserProfileSerializer
+
+    def post(self, request):
+        password = request.data.get("password")
+        username = request.user
+
+        if not username or not password:  
+            return Response({"error": "Bejelentkezés szükséges a folyamathoz."}, status=400)
+
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            return Response({"success": "Sikeres hitelesítés."}, status=200)
+        else:
+            return Response({"error": "Érvénytelen hitelesítési adatok."}, status=401)
+        
+class ValidateNeptunCode(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        username = request.user
+
+        if not username:
+            return Response({"error": "Nincs aktív felhasználói munkafolyamat. Kérem jelentkezzen be!"}, status=401)
+
+        try:
+            profile = UserProfile.objects.get(user__username=username)
+
+            if profile.authenticated:
+                return Response({"success": "Sikeres hitelesítés. Most már létrehozhat hibajegy(ek)et, ha gondja merül fel."}, status=200)
+            else:
+                return validate_neptun_code(profile)
+        except UserProfile.DoesNotExist:
+            return Response({"error": "Felhasználói profil nem található."}, status=401)
+        
+class CreateTicket(generics.GenericAPIView):
+    serializer_class = TicketSerializer
+
+    def post(self, request):
+        user = request.user
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.create(validated_data=serializer.validated_data, user=user)
+            return Response({"success": "Sikeresen létrehozta a hibajegyet."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

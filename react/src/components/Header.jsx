@@ -48,15 +48,14 @@ const Header = () => {
 
         try {
             await axios.post(
-                // "http://localhost:8000/api/logout/"
-                "https://uni-support.sytes.net/api/logout/"
+                "http://localhost:8000/api/logout/"
+                // "https://uni-support.sytes.net/api/logout/"
                 , {}, {
                 withCredentials: true,
                 headers: {
                     'X-CSRFToken': csrfToken,
                 },
             });
-            console.log("Sikeresen kijelentkezett.");
             navigate("/")
         } catch (err) {
             console.error("Hiba történt a kijelentkezés során", err);

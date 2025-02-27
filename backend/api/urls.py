@@ -10,4 +10,6 @@ urlpatterns = [
     path('update-user-profile/', UpdateUserProfileView.as_view(), name='update-user-profile'),
     path('validate-user/', ValidateUserView.as_view(), name='validate-user'),
     path('token-refresh/', RefreshTokenView.as_view(), name='token-refresh'),
+    path('validate-neptun-code/', ValidateNeptunCode.as_view(), name='validate-neptun-code'),
+    path('create-token/', CreateTicket.as_view(), name='create-token'),
 ]

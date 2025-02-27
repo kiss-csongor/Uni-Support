@@ -53,8 +53,7 @@ const UserProfile = () => {
           await sleep(5000)
           navigate("/signin")
           return
-        }
-        
+        }    
 
         const response = await axios.get(
           `https://uni-support.sytes.net/api/get-user/`,
