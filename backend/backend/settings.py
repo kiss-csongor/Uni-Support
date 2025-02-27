@@ -31,7 +31,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 from datetime import timedelta
 SIMPLE_JWT = {
-  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=1),
+  'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
   'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
   'ROTATE_REFRESH_TOKENS': False,
   'BLACKLIST_AFTER_ROTATION': True,
@@ -59,12 +59,12 @@ SIMPLE_JWT = {
   'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 
   # custom
-  'AUTH_COOKIE': 'access_token',  # Cookie name. Enables cookies if value is set.
-  'AUTH_COOKIE_DOMAIN': None,     # A string like "example.com", or None for standard domain cookie.
-  'AUTH_COOKIE_SECURE': False,    # Whether the auth cookies should be secure (https:// only).
-  'AUTH_COOKIE_HTTP_ONLY' : True, # Http only cookie flag.It's not fetch by javascript.
-  'AUTH_COOKIE_PATH': '/',        # The path of the auth cookie.
-  'AUTH_COOKIE_SAMESITE': 'Lax',  # Whether to set the flag restricting cookie leaks on cross-site requests. This can be 'Lax', 'Strict', or None to disable the flag.
+  'AUTH_COOKIE': 'access_token', 
+  'AUTH_COOKIE_DOMAIN': None, 
+  'AUTH_COOKIE_SECURE': False, 
+  'AUTH_COOKIE_HTTP_ONLY' : True,
+  'AUTH_COOKIE_PATH': '/', 
+  'AUTH_COOKIE_SAMESITE': 'Lax', 
 }
 # Application definition
 
@@ -123,7 +123,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
+"""
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -143,7 +143,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-"""
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

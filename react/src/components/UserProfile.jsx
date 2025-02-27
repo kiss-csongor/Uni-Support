@@ -9,6 +9,8 @@ import LoginData from "./LoginData";
 import { CSSTransition } from 'react-transition-group';
 import Cookies from "js-cookie";
 import { refreshAccessToken } from "./RefreshAccessToken";
+import { useAuth } from '../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 const UserProfile = () => {
   const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -19,6 +21,8 @@ const UserProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [dataVisualized, setDataVisualized] = useState("profileData");
+  const { logout } = useAuth();
+  const navigate = useNavigate();
   const csrfToken = Cookies.get("csrftoken")
   const [formData, setFormData] = useState({
     full_name: "",
@@ -43,11 +47,18 @@ const UserProfile = () => {
     const fetchUserData = async () => {
 
       try {
-        await refreshAccessToken();
+        const refreshTokenFunction = await refreshAccessToken(logout, navigate);
+        if (refreshTokenFunction && refreshTokenFunction.err !== "") {
+          setError(refreshTokenFunction.err)
+          await sleep(5000)
+          navigate("/signin")
+          return
+        }
+        
 
         const response = await axios.get(
-          // `https://uni-support.sytes.net/api/get-user/`,
-          `http://localhost:8000/api/get-user/`,
+          `https://uni-support.sytes.net/api/get-user/`,
+          // `http://localhost:8000/api/get-user/`,
           { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
         );
 
@@ -146,8 +157,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.post(
-        // `https://uni-support.sytes.net/api/validate-user/`,
-        `http://localhost:8000/api/validate-user/`,
+        `https://uni-support.sytes.net/api/validate-user/`,
+        // `http://localhost:8000/api/validate-user/`,
         { password },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
@@ -167,8 +178,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.put(
-        // `https://uni-support.sytes.net/api/update-user/`,
-        `http://localhost:8000/api/update-user/`,
+        `https://uni-support.sytes.net/api/update-user/`,
+        // `http://localhost:8000/api/update-user/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
@@ -189,8 +200,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.put(
-        // `https://uni-support.sytes.net/api/update-user-profile/`,
-        `http://localhost:8000/api/update-user-profile/`,
+        `https://uni-support.sytes.net/api/update-user-profile/`,
+        // `http://localhost:8000/api/update-user-profile/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
@@ -216,7 +227,15 @@ const UserProfile = () => {
     setAuthData((prev) => ({ ...prev, [id]: value }));
   };
 
-  if (loading) return <p className="text-center text-lg text-gray-700">Betöltés...</p>;
+  if (loading) {
+    return (
+      <div>
+        <p className="text-center text-xl lg:mb-[600px] text-gray-700">Betöltés...</p>
+        {error && <ErrorAlert message={error} setError={setError} />}
+        {succes && <SuccesAlert message={succes} setSucces={setSucces} />}
+      </div>
+    );
+  }
 
   return (
     <Section className="min-h-screen py-10 px-4 sm:px-6 lg:px-8">

@@ -1,5 +1,5 @@
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.views import TokenRefreshView
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from django.middleware import csrf
 from rest_framework import status, generics
 from rest_framework.response import Response
@@ -17,35 +17,41 @@ def get_tokens_for_user(user):
         'access': str(refresh.access_token),
     }
 
+def invalid_token_delete(request):
+    response = Response({"message": "Munkamenete lejárt, kérjük, jelentkezzen be újra!"}, status=status.HTTP_401_UNAUTHORIZED)
+    response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
+    response.delete_cookie("refresh_token")
+    response.delete_cookie("csrftoken")
+    request.session.flush()
+    return response
+
 class RefreshTokenView(generics.GenericAPIView):
     authentication_classes = [] 
     permission_classes = []
 
-    def post(self, request, *args, **kwargs):
-        refresh_token = request.data.get("refresh_token")
-        if not refresh_token:
-            return Response({'error': 'Munkafolyamatod lejárt, jelentkezz be újra!'}, status=status.HTTP_400_BAD_REQUEST)
-
+    def post(self, request):
         try:
-            refresh = RefreshToken(refresh_token)
+            refresh_token = request.COOKIES.get('refresh_token')
+            if not refresh_token:
+                return Response({"error": "No refresh token provided"}, status=400)
+
+            refresh = RefreshToken(refresh_token) 
             new_access_token = str(refresh.access_token)
-            new_refresh_token = str(refresh)
 
-            # Válasz előkészítése
-            response = Response({'message': 'Token refreshed successfully'}, status=status.HTTP_200_OK)
+            response = Response({"message": "Access token refreshed"}, status=200)
 
-            # Régi tokenek törlése
-            response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
-            response.delete_cookie("refresh_token")
-            response.delete_cookie("csrftoken")
-            
-            print("fasza")
+            response.set_cookie(
+                key="access_token",
+                value=new_access_token,
+                httponly=True,
+                secure=False,
+                samesite="Lax",
+            )
 
-            
             return response
-        except Exception as e:
-            print(e)
-            return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+        except (TokenError, InvalidToken):
+            return invalid_token_delete(request)
 
 class LoginView(generics.GenericAPIView):
     def post(self, request, format=None):
@@ -102,6 +108,7 @@ class LogoutView(generics.GenericAPIView):
         response.delete_cookie("csrftoken")
         request.session.flush()
         return response
+
 
 class GetUserProfileView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
