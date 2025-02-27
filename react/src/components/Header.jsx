@@ -47,7 +47,10 @@ const Header = () => {
         setOpenNavigation(false);
 
         try {
-            await axios.post("http://localhost:8000/api/logout/", {}, {
+            await axios.post(
+                // "http://localhost:8000/api/logout/"
+                "http://uni-support.sytes.net/api/logout/
+                , {}, {
                 withCredentials: true,
                 headers: {
                     'X-CSRFToken': csrfToken,

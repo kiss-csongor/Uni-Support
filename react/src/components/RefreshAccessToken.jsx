@@ -13,7 +13,7 @@ export const refreshAccessToken = async (logout, navigate) => {
 
   try {
     await axios.post(
-      "https://uni-support.sytes.net/token-refresh/",
+      "https://uni-support.sytes.net/api/token-refresh/",
       // "http://localhost:8000/api/token-refresh/",
       { refresh_token: refreshToken },
       { withCredentials: true }
