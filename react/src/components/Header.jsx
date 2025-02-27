@@ -49,7 +49,7 @@ const Header = () => {
         try {
             await axios.post(
                 // "http://localhost:8000/api/logout/"
-                "http://uni-support.sytes.net/api/logout/"
+                "https://uni-support.sytes.net/api/logout/"
                 , {}, {
                 withCredentials: true,
                 headers: {
