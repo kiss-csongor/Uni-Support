@@ -19,25 +19,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         if value == '':
             return None
         return value
-
-class LoginSerializer(serializers.Serializer):
-    username = serializers.CharField()
-    password = serializers.CharField()
-
-    def validate(self, data):
-        username = data.get('username')
-        password = data.get('password')
-
-        user = authenticate(username=username, password=password)
-
-        if user is None:
-            raise serializers.ValidationError("Nem tartozik a hitelesítési adatokhoz felhasználó")
-        
-        refresh = RefreshToken.for_user(user)
-        data['token'] = str(refresh.access_token)
-        data['user'] = user
-        
-        return data
     
 class RegisterSerializer(serializers.Serializer):
     username = serializers.CharField()

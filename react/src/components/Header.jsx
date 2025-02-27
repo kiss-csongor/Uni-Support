@@ -3,19 +3,25 @@ import { useLocation, Link } from "react-router-dom";
 import Button from './Button';
 import MenuSvg from '../assets/svg/MenuSvg'
 import { HamburgerMenu } from './design/Header'
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import sze_fekvo_logo from '../assets/own/sze_fekvo_logo.png'
 import '../css/Header.css';
 import { useAuth } from '../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 import 'boxicons'
 import SuccesAlert from './SuccesAlert'
+import axios from "axios";
+import Cookies from "js-cookie";
 
 const Header = () => {
+    const csrfToken = Cookies.get("csrftoken")
+
     const [succes, setSucces] = useState("");
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     const pathname = useLocation();
+    const navigate = useNavigate();
     const { status , logout } = useAuth();
     const [openNavigation, setOpenNavigation] = useState(false);
 
@@ -39,6 +45,20 @@ const Header = () => {
     const handleLogout = async () => {
         enablePageScroll();
         setOpenNavigation(false);
+
+        try {
+            await axios.post("http://localhost:8000/api/logout/", {}, {
+                withCredentials: true,
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                },
+            });
+            console.log("Sikeresen kijelentkezett.");
+            navigate("/")
+        } catch (err) {
+            console.error("Hiba történt a kijelentkezés során", err);
+        }
+
         setSucces("Sikeresen kijelentkezett.");
         await sleep(3000);
         logout();

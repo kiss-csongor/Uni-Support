@@ -1,17 +1,145 @@
+from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
+from django.middleware import csrf
 from rest_framework import status, generics
 from rest_framework.response import Response
-from .serializers import *
 from rest_framework.permissions import IsAuthenticated
-from .models import UserProfile
+from django.conf import settings
+from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from .models import *
+from .serializers import *
+
+def get_tokens_for_user(user):
+    refresh = RefreshToken.for_user(user)
+    return {
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    }
+
+def invalid_token_delete(request):
+    response = Response({"message": "Munkamenete lejárt, kérjük, jelentkezzen be újra!"}, status=status.HTTP_401_UNAUTHORIZED)
+    response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
+    response.delete_cookie("refresh_token")
+    response.delete_cookie("csrftoken")
+    request.session.flush()
+    return response
+
+class RefreshTokenView(generics.GenericAPIView):
+    authentication_classes = [] 
+    permission_classes = []
+
+    def post(self, request):
+        try:
+            refresh_token = request.COOKIES.get('refresh_token')
+            if not refresh_token:
+                return Response({"error": "No refresh token provided"}, status=400)
+
+            refresh = RefreshToken(refresh_token) 
+            new_access_token = str(refresh.access_token)
+
+            response = Response({"message": "Access token refreshed"}, status=200)
+
+            response.set_cookie(
+                key="access_token",
+                value=new_access_token,
+                httponly=True,
+                secure=False,
+                samesite="Lax",
+            )
+
+            return response
+
+        except (TokenError, InvalidToken):
+            return invalid_token_delete(request)
+
+class LoginView(generics.GenericAPIView):
+    def post(self, request, format=None):
+        data = request.data
+        response = Response()
+        username = data.get('username', None)
+        password = data.get('password', None)
+        user = authenticate(username=username, password=password)
+
+        if user is not None:
+            if user.is_active:
+                # Generálj egy refresh token-t és access token-t
+                refresh = RefreshToken.for_user(user)
+                access_token = str(refresh.access_token)
+                refresh_token = str(refresh)
+
+                # Set the access token as HttpOnly cookie
+                response.set_cookie(
+                    key=settings.SIMPLE_JWT['AUTH_COOKIE'],
+                    value=access_token,
+                    expires=settings.SIMPLE_JWT['ACCESS_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
+                    samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+                )
+
+                # Set the refresh token as HttpOnly cookie
+                response.set_cookie(
+                    key="refresh_token",
+                    value=refresh_token,
+                    expires=settings.SIMPLE_JWT['REFRESH_TOKEN_LIFETIME'],
+                    secure=False,
+                    httponly=False,
+                    samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+                )
+
+                csrf.get_token(request)
+                
+                response.data = {"Success": "Login successful", "data": {"refresh_token": refresh_token}}
+                return response
+            else:
+                return Response({"No active": "This account is not active!!"}, status=status.HTTP_404_NOT_FOUND)
+        else:
+            return Response({"Invalid": "Invalid username or password!!"}, status=status.HTTP_404_NOT_FOUND)
+        
+class LogoutView(generics.GenericAPIView):
+    authentication_classes = [] 
+    permission_classes = []
+
+    def post(self, request):
+        response = Response({"message": "Kijelentkezés sikeres"}, status=status.HTTP_200_OK)
+        response.delete_cookie(settings.SIMPLE_JWT['AUTH_COOKIE'])
+        response.delete_cookie("refresh_token")
+        response.delete_cookie("csrftoken")
+        request.session.flush()
+        return response
+
+
+class GetUserProfileView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            profile = UserProfile.objects.get(user__username=request.user)
+            serializer = UserProfileSerializer(profile)
+            return Response(serializer.data)
+        except UserProfile.DoesNotExist:
+            return Response({"error": "User profile not found"}, status=404)
+    
+class RegisterView(generics.GenericAPIView):
+    serializer_class = RegisterSerializer
+
+    def post(self, request):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            # Felhasználó létrehozása
+            serializer.create(validated_data=serializer.validated_data)
+            return Response({"message": "Regisztráció sikeres!"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class ValidateUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserProfileSerializer
 
     def post(self, request):
-        username = request.data.get("username")
         password = request.data.get("password")
+        username = request.user
 
         if not username or not password:  
             return Response({"error": "Bejelentkezés szükséges a folyamathoz."}, status=400)
@@ -23,12 +151,13 @@ class ValidateUserView(generics.GenericAPIView):
         else:
             return Response({"error": "Érvénytelen hitelesítési adatok."}, status=401)
         
+
 class UpdateUserView(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
     def put(self, request):
-        username = request.data.get("username")
+        username = request.user
         if not username:
             return Response({"error": "Username is required"}, status=400)
 
@@ -48,7 +177,7 @@ class UpdateUserProfileView(generics.GenericAPIView):
     serializer_class = UserProfileSerializer
 
     def put(self, request):
-        username = request.data.get("username")
+        username = request.user
         if not username:
             return Response({"error": "Username is required"}, status=400)
 
@@ -66,43 +195,3 @@ class UpdateUserProfileView(generics.GenericAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class GetUserProfileView(generics.GenericAPIView):
-    permission_classes = [IsAuthenticated]
-
-    def get(self, request):
-        try:
-            print(request.user)
-            profile = UserProfile.objects.get(user__username=request.user)
-            serializer = UserProfileSerializer(profile)
-            return Response(serializer.data)
-        except UserProfile.DoesNotExist:
-            return Response({"error": "User profile not found"}, status=404)
-
-class LoginView(generics.GenericAPIView):
-    serializer_class = LoginSerializer
-
-    def post(self, request):
-        print("fasza")
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            token = serializer.validated_data['token']
-            return Response({
-                "message": "Bejelentkezés sikeres!",
-                "token": token,
-            }, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class RegisterView(generics.GenericAPIView):
-    serializer_class = RegisterSerializer
-
-    def post(self, request):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            # Felhasználó létrehozása
-            serializer.create(validated_data=serializer.validated_data)
-            return Response({"message": "Regisztráció sikeres!"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorAlert from './ErrorAlert';
 import SuccesAlert from './SuccesAlert';
 
+
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -27,19 +28,20 @@ const Login = () => {
       const response = await axios.post(
         "http://localhost:8000/api/login/",
         // "https://uni-support.sytes.net/api/login/",
-      { 
-        username,
-        password,
-      });
-  
+        { 
+          username,
+          password,
+        },
+          { withCredentials: true }
+      );
       if (response.status === 200) {
         setSucces("Sikeresen bejelentkezett!");
-        login(response.data.token)
+        login()
         await sleep(3000);
         navigate('/');
       } 
     } catch(err) {
-      setError("Hib a bejelentkezés során");
+      setError("Hiba bejelentkezés során");
     }
   };
 
