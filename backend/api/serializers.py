@@ -1,6 +1,6 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
-from .models import UserProfile
+from .models import *
 from rest_framework import serializers
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -26,7 +26,6 @@ class RegisterSerializer(serializers.Serializer):
     password = serializers.CharField()
 
     def validate(self, data):
-        # Ellenőrizzük, hogy létezik-e már a felhasználó
         username = data.get('username')
         email = data.get('email')
 
@@ -49,3 +48,18 @@ class RegisterSerializer(serializers.Serializer):
             user=user
         )
         return user
+    
+class TicketSerializer(serializers.Serializer):
+    title = serializers.CharField(max_length=255)
+    description = serializers.CharField(max_length=255)
+
+    def validate(self, data):
+        return data
+
+    def create(self, validated_data, user):
+        ticket = Ticket.objects.create(
+            title=validated_data['title'],
+            description=validated_data['description'],
+            author=user
+        )
+        return ticket

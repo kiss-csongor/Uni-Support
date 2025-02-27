@@ -70,3 +70,7 @@ class NeptunData(models.Model):
     birth_date = models.DateField(null=True, blank=True)
     full_name = models.CharField(max_length=255)
     mothers_name = models.CharField(max_length=255)
+    birth_place = models.CharField(max_length=30, null=True, blank=True)
+
+    def __str__(self):
+        return f'{self.full_name} - {self.neptun_code}'

@@ -13,8 +13,8 @@ export const refreshAccessToken = async (logout, navigate) => {
 
   try {
     await axios.post(
-      "https://uni-support.sytes.net/api/token-refresh/",
-      // "http://localhost:8000/api/token-refresh/",
+      // "https://uni-support.sytes.net/api/token-refresh/",
+      "http://localhost:8000/api/token-refresh/",
       { refresh_token: refreshToken },
       { withCredentials: true }
     );
@@ -24,8 +24,8 @@ export const refreshAccessToken = async (logout, navigate) => {
     if (error.response && error.response.status === 401) {
       try {
         await axios.post(
-          "https://uni-support.sytes.net/api/logout/",
-          // "http://localhost:8000/api/logout/",
+          // "https://uni-support.sytes.net/api/logout/",
+          "http://localhost:8000/api/logout/",
         {}, {
           withCredentials: true,
           headers: {

@@ -53,12 +53,11 @@ const UserProfile = () => {
           await sleep(5000)
           navigate("/signin")
           return
-        }
-        
+        }    
 
         const response = await axios.get(
-          `https://uni-support.sytes.net/api/get-user/`,
-          // `http://localhost:8000/api/get-user/`,
+          // `https://uni-support.sytes.net/api/get-user/`,
+          `http://localhost:8000/api/get-user/`,
           { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
         );
 
@@ -157,8 +156,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.post(
-        `https://uni-support.sytes.net/api/validate-user/`,
-        // `http://localhost:8000/api/validate-user/`,
+        // `https://uni-support.sytes.net/api/validate-user/`,
+        `http://localhost:8000/api/validate-user/`,
         { password },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
@@ -178,8 +177,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.put(
-        `https://uni-support.sytes.net/api/update-user/`,
-        // `http://localhost:8000/api/update-user/`,
+        // `https://uni-support.sytes.net/api/update-user/`,
+        `http://localhost:8000/api/update-user/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
@@ -200,8 +199,8 @@ const UserProfile = () => {
       await refreshAccessToken();
 
       const response = await axios.put(
-        `https://uni-support.sytes.net/api/update-user-profile/`,
-        // `http://localhost:8000/api/update-user-profile/`,
+        // `https://uni-support.sytes.net/api/update-user-profile/`,
+        `http://localhost:8000/api/update-user-profile/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
