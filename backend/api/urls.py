@@ -11,5 +11,6 @@ urlpatterns = [
     path('validate-user/', ValidateUserView.as_view(), name='validate-user'),
     path('token-refresh/', RefreshTokenView.as_view(), name='token-refresh'),
     path('validate-neptun-code/', ValidateNeptunCode.as_view(), name='validate-neptun-code'),
-    path('create-token/', CreateTicket.as_view(), name='create-token'),
+    path('create-tickets/', CreateTickets.as_view(), name='create-tickets'),
+    path('get-tickets/', GetTickets.as_view(), name='get-tickets'),
 ]

@@ -56,8 +56,8 @@ const CreateTicket = () => {
       await refreshAccessToken();
 
       const response = await axios.post(
-        // `https://uni-support.sytes.net/api/create-token/`,
-        `http://localhost:8000/api/create-token/`,
+        // `https://uni-support.sytes.net/api/create-tickets/`,
+        `http://localhost:8000/api/create-tickets/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
