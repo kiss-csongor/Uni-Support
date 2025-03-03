@@ -17,7 +17,7 @@ DEBUG = True
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -37,7 +37,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
+"""
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True

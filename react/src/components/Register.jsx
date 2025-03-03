@@ -33,7 +33,20 @@ const Register = () => {
   };
 
   const handleLogin = async () => {
-    // Ha a két jelszó nem egyezik
+    if (formData.username.length > 30 || formData.username.length < 5) {
+      await handleError("A neved minimum 5, maximum 30 karakter lehet.");
+      return;
+    }
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    if (formData.email && !emailRegex.test(formData.email)) {
+      await handleError("Hibás email formátum.")
+      return;
+    }
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*(),.?":{}|<>]).{8,60}$/;
+    if (!passwordRegex.test(formData.password)) {
+      await handleError("Helytelen jelszó formátum (legalább 1 nagybetű, 1 speciális karakter és 1 szám. Min. 8 és Max. 60 karakter).");
+      return;
+    }
     if (formData.password !== formData.passwordAgain) {
       handleError("A mezőbe írt jelszó páros nem egyezik meg.")
       return;      
@@ -41,8 +54,8 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        // "http://localhost:8000/api/register/",
-        "https://uni-support.sytes.net/api/register/",
+        "http://localhost:8000/api/register/",
+        // "https://uni-support.sytes.net/api/register/",
       {
         username: formData.username,
         email: formData.email,
@@ -79,7 +92,7 @@ const Register = () => {
                       onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="text"
-                      maxLength={25}
+                      maxLength={40}
                     />
                     <div className="line" />
                   </div>
@@ -91,7 +104,7 @@ const Register = () => {
                       onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="email"
-                      maxLength={25}
+                      maxLength={40}
                     />
                     <div className="line" />
                   </div>
@@ -103,8 +116,15 @@ const Register = () => {
                       onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="password"
-                      maxLength={25}
+                      maxLength={40}
                     />
+                    <span 
+                      className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+                      onMouseEnter={(e) => e.target.previousSibling.type = "text"}
+                      onMouseLeave={(e) => e.target.previousSibling.type = "password"}
+                    >
+                      🔒
+                    </span>
                     <div className="line" />
                   </div>
                   <div className="mb-6 passwordAgain group mx-auto max-md:w-60 md:w-80 text-left relative">
@@ -115,8 +135,15 @@ const Register = () => {
                       onChange={handleChange}
                       className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`}
                       type="password"
-                      maxLength={25}
+                      maxLength={40}
                     />
+                    <span 
+                      className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+                      onMouseEnter={(e) => e.target.previousSibling.type = "text"}
+                      onMouseLeave={(e) => e.target.previousSibling.type = "password"}
+                    >
+                      🔒
+                    </span>                    
                     <div className="line" />
                   </div>
                   <div className="button block mb-1">
