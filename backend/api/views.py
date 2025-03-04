@@ -242,8 +242,8 @@ class ValidateNeptunCode(generics.GenericAPIView):
         except UserProfile.DoesNotExist:
             return Response({"error": "Felhasználói profil nem található."}, status=401)
         
-class CreateTicket(generics.GenericAPIView):
-    serializer_class = TicketSerializer
+class CreateTickets(generics.GenericAPIView):
+    serializer_class = createTicketSerializer
 
     def post(self, request):
         user = request.user
@@ -252,3 +252,14 @@ class CreateTicket(generics.GenericAPIView):
             serializer.create(validated_data=serializer.validated_data, user=user)
             return Response({"success": "Sikeresen létrehozta a hibajegyet."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class GetTickets(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            tickets = Ticket.objects.filter(author=request.user)
+            serializer = displayTicketSerializer(tickets, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

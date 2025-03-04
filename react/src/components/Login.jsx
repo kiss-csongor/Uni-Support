@@ -59,14 +59,21 @@ const Login = () => {
               <div className="mb-12">
                 <div className="username group mx-auto max-md:w-60 md:w-80 text-left relative">
                     <label htmlFor="username" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${username ? "-translate-y-6" : "-translate-y-0"}`}>Felhasználónév</label>
-                    <input id="username" value={username} onChange={(e) => setUsername(e.target.value)} className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`} type="text" maxLength={25} />
+                    <input id="username" value={username} onChange={(e) => setUsername(e.target.value)} className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`} type="text" maxLength={40} />
                     <div className="line" />
                 </div>
               </div>
               <div className="mb-10">
               <div className="password group mx-auto max-md:w-60 md:w-80 text-left relative">
                     <label htmlFor="password" className={`font-bold uppercase absolute transition-all duration-150 transform cursor-pointer group-focus-within:-translate-y-6 ${password ? "-translate-y-6" : "-translate-y-0"}`}>Jelszó</label>
-                    <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`} type="password" maxLength={25} />
+                    <input id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={`text-n-1/80 p-1 bg-transparent group-focus-within:outline-none max-md:w-60 sm:w-80`} type="password" maxLength={40} />
+                    <span 
+                      className="text-2xl absolute right-2 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500 hover:text-gray-700"
+                      onMouseEnter={(e) => e.target.previousSibling.type = "text"}
+                      onMouseLeave={(e) => e.target.previousSibling.type = "password"}
+                    >
+                      🔒
+                    </span>
                     <div className="line" />
                 </div>
               </div>

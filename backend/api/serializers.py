@@ -49,7 +49,7 @@ class RegisterSerializer(serializers.Serializer):
         )
         return user
     
-class TicketSerializer(serializers.Serializer):
+class createTicketSerializer(serializers.Serializer):
     title = serializers.CharField(max_length=255)
     description = serializers.CharField(max_length=255)
 
@@ -63,3 +63,8 @@ class TicketSerializer(serializers.Serializer):
             author=user
         )
         return ticket
+    
+class displayTicketSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        fields = '__all__'
