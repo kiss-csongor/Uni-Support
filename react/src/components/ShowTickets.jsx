@@ -114,8 +114,8 @@ const ShowTickets = () => {
           {tickets.map((ticket) => (
             <div key={ticket.id} className="group block relative p-0.5 bg-no-repeat bg-[length:100%_100%] max-w-[24rem]" style={{ backgroundImage: `url(${getRandomBackgroundImage()})` }}>
               <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem] pointer-events-none">
-                <h5 className="h5 mb-5">{ticket.title}</h5>
-                <p className="body-1 mb-6 text-n-3 min-w-96">{ticket.description}</p>
+                <h5 className="h5 mb-5 min-w-80 max-w-96 break-words hyphens-auto">{ticket.title}</h5>
+                <p className="body-1 mb-6 text-n-3  min-w-80 max-w-96 break-words hyphens-auto">{ticket.description}</p>
                 
 
                 <div className="flex items-center mb-4">

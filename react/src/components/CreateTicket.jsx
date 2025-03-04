@@ -51,9 +51,19 @@ const CreateTicket = () => {
     validateNeptunCode();
   }, []);
 
-  const handleTokenCreate = async () => {
+  const handleTicketCreate = async () => {
     try {
       await refreshAccessToken();
+
+      if (formData.title.length > 50 || formData.title.length < 10) {
+        await handleError("A hibajegyed címének hosszúsága minimum 10 és maximum 50 karakter leghet.")
+        return;
+      }
+
+      if (formData.description.length > 300 || formData.description.length < 30) {
+        await handleError("A hibajegyed leírásának hosszúsága minimum 30 és maximum 300 karakter leghet.")
+        return;
+      }
 
       const response = await axios.post(
         // `https://uni-support.sytes.net/api/create-tickets/`,
@@ -70,6 +80,12 @@ const CreateTicket = () => {
         await sleep(5000);
         setError("");
     }
+  };
+
+  const handleError = async (message) => {
+    setError(message);
+    await sleep(5000);
+    setError("");
   };
 
   const handleChange = (e) => {
@@ -112,7 +128,7 @@ const CreateTicket = () => {
             <div className="flex justify-center space-x-4">
               <button 
                 className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors"
-                onClick={handleTokenCreate}
+                onClick={handleTicketCreate}
               >
                 Hibajegy létrehozása
               </button>
