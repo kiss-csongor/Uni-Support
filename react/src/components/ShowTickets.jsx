@@ -80,8 +80,8 @@ const ShowTickets = () => {
         }
 
         const response = await axios.get(
-          // `https://uni-support.sytes.net/api/get-tickets/`,
-          `http://localhost:8000/api/get-tickets/`,
+          `https://uni-support.sytes.net/api/get-tickets/`,
+          // `http://localhost:8000/api/get-tickets/`,
           { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
         );
 

@@ -54,8 +54,8 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/register/",
-        // "https://uni-support.sytes.net/api/register/",
+        // "http://localhost:8000/api/register/",
+        "https://uni-support.sytes.net/api/register/",
       {
         username: formData.username,
         email: formData.email,
