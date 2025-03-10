@@ -32,8 +32,8 @@ const CreateTicket = () => {
         }
 
         const response = await axios.get(
-          `https://uni-support.sytes.net/api/validate-neptun-code/`,
-          // `http://localhost:8000/api/validate-neptun-code/`,
+          // `https://uni-support.sytes.net/api/validate-neptun-code/`,
+          `http://localhost:8000/api/validate-neptun-code/`,
           { withCredentials: true, headers: { "X-CSRFToken": csrfToken } }
         );
 

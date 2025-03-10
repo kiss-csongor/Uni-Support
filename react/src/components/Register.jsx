@@ -32,7 +32,7 @@ const Register = () => {
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     if (formData.username.length > 30 || formData.username.length < 5) {
       await handleError("A neved minimum 5, maximum 30 karakter lehet.");
       return;
@@ -54,8 +54,8 @@ const Register = () => {
 
     try {
       const response = await axios.post(
-        // "http://localhost:8000/api/register/",
-        "https://uni-support.sytes.net/api/register/",
+        "http://localhost:8000/api/register/",
+        // "https://uni-support.sytes.net/api/register/",
       {
         username: formData.username,
         email: formData.email,
@@ -147,7 +147,7 @@ const Register = () => {
                     <div className="line" />
                   </div>
                   <div className="button block mb-1">
-                    <Button type="submit" onClick={handleLogin}>Fiók létrehozása</Button>
+                    <Button type="submit" onClick={handleRegister}>Fiók létrehozása</Button>
                   </div>
                   <div className="button mb-1">
                     <Link to="/signin" className="text-n-2 transition-colors hover:text-n-1">Van már fiókod?</Link>

@@ -58,7 +58,7 @@ const translatePriority = (priority) => {
     }
   };
 
-const ShowTickets = () => {
+const AdminPage = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const csrfToken = Cookies.get("csrftoken");
@@ -80,8 +80,8 @@ const ShowTickets = () => {
         }
 
         const response = await axios.get(
-         //  `https://uni-support.sytes.net/api/get-self-tickets/`,
-          `http://localhost:8000/api/get-self-tickets/`,
+         //  `https://uni-support.sytes.net/api/get-all-tickets/`,
+          `http://localhost:8000/api/get-all-tickets/`,
           { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
         );
 
@@ -167,4 +167,4 @@ const ShowTickets = () => {
   );
 };
 
-export default ShowTickets;
+export default AdminPage;

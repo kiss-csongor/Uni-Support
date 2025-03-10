@@ -253,7 +253,7 @@ class CreateTickets(generics.GenericAPIView):
             return Response({"success": "Sikeresen létrehozta a hibajegyet."}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class GetTickets(generics.GenericAPIView):
+class GetSelfTickets(generics.GenericAPIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
@@ -263,3 +263,20 @@ class GetTickets(generics.GenericAPIView):
             return Response(serializer.data)
         except Exception as e:
             return Response({"error": str(e)}, status=500)
+        
+class GetAllTickets(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            tickets = Ticket.objects
+            serializer = displayTicketSerializer(tickets, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+class GetIsSuperUserView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({"is_superuser": request.user.is_superuser})
