@@ -64,7 +64,7 @@ class createTicketSerializer(serializers.Serializer):
         )
         return ticket
     
-class displayTicketSerializer(serializers.ModelSerializer):
+class TicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
         fields = '__all__'

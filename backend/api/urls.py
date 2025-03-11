@@ -15,4 +15,5 @@ urlpatterns = [
     path('get-self-tickets/', GetSelfTickets.as_view(), name='get-self-tickets'),
     path('get-all-tickets/', GetAllTickets.as_view(), name='get-all-tickets'),
     path('get-is-superuser/', GetIsSuperUserView.as_view(), name='get-is-superuser'),
+    path('update-ticket/', UpdateTicketView.as_view(), name='update-ticket'),
 ]
