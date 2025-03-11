@@ -9,8 +9,8 @@ import FAQ from "./FAQ.jsx";
 import SignUp from "./SignUp.jsx";
 import SignIn from "./SignIn.jsx";
 import Profile from "./Profile.jsx";
+import Admin from "./Admin.jsx";
 import Test from "./components/Test.jsx";
-import Chatbot from "./Chatbot.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 
 createRoot(document.getElementById("root")).render(
@@ -23,8 +23,8 @@ createRoot(document.getElementById("root")).render(
           <Route path="/faq" element={<FAQ />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/chatbot" element={<Chatbot />} />
           <Route path="/test" element={<Test />} />
         </Routes>
       </Router>

@@ -70,8 +70,8 @@ export const isLoggedInNavigation = [
   },
   {
     id: "3",
-    title: "Chatbot",
-    url: "/chatbot",
+    title: "Admin",
+    url: "/admin",
   },
   {
     id: "4",
@@ -99,17 +99,12 @@ export const isLoggedOutNavigation = [
   },
   {
     id: "2",
-    title: "Chatbot",
-    url: "/chatbot",
-  },
-  {
-    id: "3",
     title: "Új fiók",
     url: "/signup",
     onlyMobile: true,
   },
   {
-    id: "4",
+    id: "3",
     title: "Bejelentkezés",
     url: "/signin",
     onlyMobile: true,

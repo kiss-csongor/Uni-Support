@@ -54,7 +54,7 @@ const translatePriority = (priority) => {
       case 3:
         return 'Magas';
       default:
-        return priority; // Ha ismeretlen az érték, visszaadjuk az eredetit
+        return priority;
     }
   };
 
@@ -80,8 +80,8 @@ const ShowTickets = () => {
         }
 
         const response = await axios.get(
-          `https://uni-support.sytes.net/api/get-tickets/`,
-          // `http://localhost:8000/api/get-tickets/`,
+          `https://uni-support.sytes.net/api/get-self-tickets/`,
+          // `http://localhost:8000/api/get-self-tickets/`,
           { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
         );
 

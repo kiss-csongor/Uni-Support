@@ -15,15 +15,32 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const Header = () => {
-    const csrfToken = Cookies.get("csrftoken")
-
+    const csrfToken = Cookies.get("csrftoken");
     const [succes, setSucces] = useState("");
+    const [isSuperUser, setIsSuperUser] = useState(false);
+    const [openNavigation, setOpenNavigation] = useState(false);
+    const navigate = useNavigate();
+    const { status, logout } = useAuth();
+    const pathname = useLocation();
+
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-    const pathname = useLocation();
-    const navigate = useNavigate();
-    const { status , logout } = useAuth();
-    const [openNavigation, setOpenNavigation] = useState(false);
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get(
+                    `https://uni-support.sytes.net/api/get-is-superuser/`,
+                    //`http://localhost:8000/api/get-is-superuser/`, 
+                    { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+                );
+                setIsSuperUser(response.data.is_superuser);
+            } catch (err) {
+                console.error("Felhasználói adatok lekérése sikertelen", err);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     const toggleNavigation = () => {
         if (openNavigation) {
@@ -48,23 +65,19 @@ const Header = () => {
 
         try {
             await axios.post(
-                // "http://localhost:8000/api/logout/"
-                "https://uni-support.sytes.net/api/logout/"
-                , {}, {
-                withCredentials: true,
-                headers: {
-                    'X-CSRFToken': csrfToken,
-                },
-            });
-            navigate("/")
+                "https://uni-support.sytes.net/api/logout/",
+                // "http://localhost:8000/api/logout/",
+                {},
+                { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+            );
+            navigate("/");
         } catch (err) {
             console.error("Hiba történt a kijelentkezés során", err);
         }
 
         setSucces("Sikeresen kijelentkezett.");
-        await sleep(3000);
         logout();
-    }
+    };
 
   return (
     <div>
@@ -77,7 +90,7 @@ const Header = () => {
                     <div className="relative z-2 flex flex-col items-center justify-center m-auto lg:flex-row">
                     {status === "in" && (
                         <>
-                            {isLoggedInNavigation.map((item) => (
+                            {isLoggedInNavigation.filter(item => !(item.title === "Admin" && !isSuperUser)).map((item) => (
                                 <Link to={item.url} onClick={item.title === "Kijelentkezés" ? handleLogout : handleClick} key={item.id} className={` block relative font-code text-2xl uppercase text-n-1 transition-colors hover:text-color-1 ${item.onlyMobile ? "lg:hidden" : ""} px-6 py-6 md:py-8 lg:-mr-0.25 lg:text-xs lg:font-semibold ${item.url === pathname.pathname ? 'z-2 lg:text-n-1 link-line-active' : 'lg:text-n-1/50'} lg:leading-5 lg:hover:text-n-1 xl:px-15 link-line`}>
                                     {item.title}
                                 </Link>
