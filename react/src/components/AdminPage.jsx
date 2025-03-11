@@ -70,36 +70,47 @@ const AdminPage = () => {
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
-        const fetchTickets = async () => {
-            try {
-                const refreshTokenFunction = await refreshAccessToken(() => {
-                    navigate('/signin');
-                });
+      const fetchTickets = async () => {
+          try {
+              const refreshTokenFunction = await refreshAccessToken(() => {
+                  navigate('/signin');
+              });
+  
+              if (refreshTokenFunction && refreshTokenFunction.err !== "") {
+                  setError(refreshTokenFunction.err);
+                  navigate("/signin");
+              }
+  
+              const adminCheckResponse = await axios.get(
+                  // `https://uni-support.sytes.net/api/get-is-superuser/`,
+                  `http://localhost:8000/api/get-is-superuser/`,
+                  { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+              );
+  
+              if (!adminCheckResponse.data.is_superuser) {
+                  setError("Nincs jogosultságod megtekinteni az oldalt");
+                  await sleep(5000);
+                  navigate("/my-tickets");
+              }
+  
+              const ticketsResponse = await axios.get(
+                  // `https://uni-support.sytes.net/api/get-all-tickets/`,
+                  `http://localhost:8000/api/get-all-tickets/`,
+                  { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+              );
+  
+              setTickets(ticketsResponse.data);
+          } catch (err) {
+              console.error("Hiba történt", err);
+              setError(err.response?.data?.error || "Hiba történt az adatok lekérésekor.");
+          } finally {
+              setLoading(false);
+          }
+      };
+  
+      fetchTickets();
+  }, []);
 
-                if (refreshTokenFunction && refreshTokenFunction.err !== "") {
-                    setError(refreshTokenFunction.err);
-                    await sleep(5000);
-                    navigate("/signin");
-                    return;
-                }
-
-                const response = await axios.get(
-                    // `https://uni-support.sytes.net/api/get-all-tickets/`,
-                    `http://localhost:8000/api/get-all-tickets/`,
-                    { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
-                );
-
-                setTickets(response.data);
-            } catch (err) {
-                console.error("Ticketek lekérése sikertelen", err);
-                setError(err.response?.data?.error || "Hiba történt a ticketek lekérésekor.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchTickets();
-    }, []);
 
     const handleEdit = (ticket) => {
         setEditingTicketId(ticket.id);

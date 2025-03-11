@@ -76,7 +76,6 @@ const Header = () => {
         }
 
         setSucces("Sikeresen kijelentkezett.");
-        await sleep(3000);
         logout();
     };
 
