@@ -63,6 +63,8 @@ const AdminPage = () => {
     const [loading, setLoading] = useState(true);
     const [editingTicketId, setEditingTicketId] = useState(null); // Szerkesztés alatt lévő ticket ID
     const [editedTicket, setEditedTicket] = useState({}); // Szerkesztett ticket adatai
+    const [messageTicketId, setMessageTicketId] = useState(null); // Üzenet küldéséhez kiválasztott ticket ID
+    const [messageText, setMessageText] = useState(""); // Üzenet szövege
     const csrfToken = Cookies.get("csrftoken");
     const [error, setError] = useState("");
     const [succes, setSucces] = useState("");
@@ -70,47 +72,44 @@ const AdminPage = () => {
     const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
     useEffect(() => {
-      const fetchTickets = async () => {
-          try {
-              const refreshTokenFunction = await refreshAccessToken(() => {
-                  navigate('/signin');
-              });
-  
-              if (refreshTokenFunction && refreshTokenFunction.err !== "") {
-                  setError(refreshTokenFunction.err);
-                  navigate("/signin");
-              }
-  
-              const adminCheckResponse = await axios.get(
-                  `https://uni-support.sytes.net/api/get-is-superuser/`,
-                  // `http://localhost:8000/api/get-is-superuser/`,
-                  { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
-              );
-  
-              if (!adminCheckResponse.data.is_superuser) {
-                  setError("Nincs jogosultságod megtekinteni az oldalt");
-                  await sleep(5000);
-                  navigate("/my-tickets");
-              }
-  
-              const ticketsResponse = await axios.get(
-                  `https://uni-support.sytes.net/api/get-all-tickets/`,
-                  // `http://localhost:8000/api/get-all-tickets/`,
-                  { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
-              );
-  
-              setTickets(ticketsResponse.data);
-          } catch (err) {
-              console.error("Hiba történt", err);
-              setError(err.response?.data?.error || "Hiba történt az adatok lekérésekor.");
-          } finally {
-              setLoading(false);
-          }
-      };
-  
-      fetchTickets();
-  }, []);
+        const fetchTickets = async () => {
+            try {
+                const refreshTokenFunction = await refreshAccessToken(() => {
+                    navigate('/signin');
+                });
 
+                if (refreshTokenFunction && refreshTokenFunction.err !== "") {
+                    setError(refreshTokenFunction.err);
+                    navigate("/signin");
+                }
+
+                const adminCheckResponse = await axios.get(
+                    `http://localhost:8000/api/get-is-superuser/`,
+                    { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+                );
+
+                if (!adminCheckResponse.data.is_superuser) {
+                    setError("Nincs jogosultságod megtekinteni az oldalt");
+                    await sleep(5000);
+                    navigate("/my-tickets");
+                }
+
+                const ticketsResponse = await axios.get(
+                    `http://localhost:8000/api/get-all-tickets/`,
+                    { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+                );
+
+                setTickets(ticketsResponse.data);
+            } catch (err) {
+                console.error("Hiba történt", err);
+                setError(err.response?.data?.error || "Hiba történt az adatok lekérésekor.");
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchTickets();
+    }, []);
 
     const handleEdit = (ticket) => {
         setEditingTicketId(ticket.id);
@@ -120,9 +119,8 @@ const AdminPage = () => {
     const handleSave = async (ticketId) => {
         try {
             const csrfToken = Cookies.get("csrftoken");
-            const response = await axios.put(      
-                `https://uni-support.sytes.net/api/update-ticket/`,
-                // `http://localhost:8000/api/update-ticket/`,
+            const response = await axios.put(
+                `http://localhost:8000/api/update-ticket/`,
                 editedTicket,
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );
@@ -137,7 +135,7 @@ const AdminPage = () => {
             setEditedTicket({});
             setSucces("Ticket sikeresen frissítve!");
             await sleep(4000);
-            setSucces("");    
+            setSucces("");
         } catch (err) {
             console.error("Ticket frissítése sikertelen", err);
             setError("Hiba történt a ticket frissítése során.");
@@ -153,6 +151,29 @@ const AdminPage = () => {
         }));
     };
 
+    const handleMessageSend = async (ticketId) => {
+        try {
+            console.log(messageText)
+            const csrfToken = Cookies.get("csrftoken");
+            await axios.post(
+                `http://localhost:8000/api/new-message/`,
+                { ticket_id: ticketId, message: messageText },
+                { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+            );
+
+            setMessageTicketId(null);
+            setMessageText("");
+            setSucces("Üzenet sikeresen elküldve!");
+            await sleep(4000);
+            setSucces("");
+        } catch (err) {
+            console.error("Üzenet küldése sikertelen", err);
+            setError("Hiba történt az üzenet küldése során.");
+            await sleep(4000);
+            setError("");
+        }
+    };
+
     if (loading) {
         return <div>Betöltés...</div>;
     }
@@ -166,12 +187,13 @@ const AdminPage = () => {
                     {tickets.map((ticket) => {
                         const isEditing = editingTicketId === ticket.id;
                         const currentTicket = isEditing ? editedTicket : ticket;
+                        const isMessageOpen = messageTicketId === ticket.id;
 
                         return (
                             <div key={ticket.id} className="group block relative p-0.5 bg-no-repeat bg-[length:100%_100%] max-w-[24rem]" style={{ backgroundImage: `url(${getRandomBackgroundImage()})` }}>
-                                <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem]">
+                                <div className="relative z-2 flex flex-col p-[2.4rem]">
                                     <h5 className="h5 mb-5 min-w-80 max-w-96 break-words hyphens-auto">{ticket.title}</h5>
-                                    <p className="body-1 mb-6 text-n-3 min-w-80 max-w-96 break-words hyphens-auto">{ticket.description}</p>
+                                    <p className="body-1 mb-6 text-n-3 min-w-80 max-w-96 break-words h-48 hyphens-auto overflow-y-auto">{ticket.description}</p>
 
                                     <div className="flex items-center mb-4">
                                         <span className="text-sm font-bold text-n-2">Prioritás:</span>
@@ -193,7 +215,6 @@ const AdminPage = () => {
                                         )}
                                     </div>
 
-                                    {/* Státusz szerkesztése */}
                                     <div className="flex items-center mb-4">
                                         <span className="text-sm font-bold text-n-2">Státusz:</span>
                                         {isEditing ? (
@@ -214,6 +235,13 @@ const AdminPage = () => {
                                             </div>
                                         )}
                                     </div>
+
+                                    <button
+                                        onClick={() => setMessageTicketId(ticket.id)}
+                                        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+                                    >
+                                        Üzenet
+                                    </button>
 
                                     <button
                                         onClick={() =>
@@ -239,6 +267,27 @@ const AdminPage = () => {
                         );
                     })}
                 </div>
+
+                {/* Üzenet küldés div középre igazítva */}
+                {messageTicketId && (
+                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+                        <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem]">
+                            <textarea
+                                value={messageText}
+                                onChange={(e) => setMessageText(e.target.value)}
+                                className="w-full p-2 border rounded mb-4"
+                                rows="4"
+                                placeholder="Írd ide az üzeneted..."
+                            />
+                            <button
+                                onClick={() => handleMessageSend(messageTicketId)}
+                                className="w-full px-4 py-2 bg-green-500 text-white rounded"
+                            >
+                                Küldés
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
             {error && <ErrorAlert message={error} setError={setError} />}
             {succes && <SuccesAlert message={succes} setSucces={setSucces} />}

@@ -65,6 +65,12 @@ class createTicketSerializer(serializers.Serializer):
         return ticket
     
 class TicketSerializer(serializers.ModelSerializer):
+    message_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Ticket
         fields = '__all__'
+
+    def get_message_count(self, obj):
+        # Az üzenetek számának lekérése a tickethez
+        return Message.objects.filter(ticket=obj).count()
