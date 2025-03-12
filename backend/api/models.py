@@ -40,30 +40,15 @@ class Ticket(models.Model):
     
     def __str__(self):
         return f'{self.author} {self.id}. számú {self.status} ticketje'
-    
-class Category (models.Model):
-    name = models.CharField(max_length=20 ,blank=False, null=False)
 
-    def __str__(self):
-        return self.name
-    
-class Post(models.Model):
-    author = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, null=False)
-    title = models.CharField(max_length=20, blank=False, null=False)
-    description = models.CharField(max_length=500, blank=False, null=False)
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    def __str__(self):
-        return f'{self.user} {self.id}. számú posztja'
-
-class Comment(models.Model):
-    sender = models.OneToOneField(User, on_delete=models.CASCADE, blank=False, null=False)
-    post = models.OneToOneField(Post, on_delete=models.CASCADE ,blank=False, null=False)
-    text = models.CharField(max_length=100, blank=False, null=False)
+class Message(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)  # OneToOne helyett ForeignKey
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages")  # Ticket kapcsolata
+    text = models.CharField(max_length=500, blank=False, null=False)  # Hosszabb szöveg támogatás
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f'{self.sender} kommentje a {self.post.id}. számú poszt alatt'
+        return f'{self.sender} üzenete a {self.ticket.id}. számú tickethez'
     
 class NeptunData(models.Model):
     neptun_code = models.CharField(max_length=6 ,null=True, blank=True)
