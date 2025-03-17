@@ -68,11 +68,30 @@ const EnvelopeIcon = () => (
   </svg>
 );
 
+const EyeIcon = ({ onClick, isRead }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={`h-5 w-5 cursor-pointer ${isRead ? 'text-green-500' : 'text-gray-500'}`}
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    onClick={onClick}
+  >
+    <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+    <path
+      fillRule="evenodd"
+      d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
+      clipRule="evenodd"
+    />
+  </svg>
+);
+
 const ShowTickets = () => {
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
-  const csrfToken = Cookies.get("csrftoken");
   const [error, setError] = useState(null);
+  const [selectedTicketId, setSelectedTicketId] = useState(null); // Kiválasztott hibajegy ID
+  const [messages, setMessages] = useState([]); // Üzenetek az adott hibajegyhez
+  const csrfToken = Cookies.get("csrftoken");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -90,7 +109,8 @@ const ShowTickets = () => {
         }
 
         const response = await axios.get(
-          `http://localhost:8000/api/get-self-tickets/`,
+          `https://uni-support.sytes.net/api/get-self-tickets/`,
+          // `http://localhost:8000/api/get-self-tickets/`,
           { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
         );
 
@@ -105,6 +125,51 @@ const ShowTickets = () => {
 
     fetchTickets();
   }, []);
+
+  const markMessageAsRead = async (messageId) => {
+    try {
+      const message = messages.find((msg) => msg.id === messageId);
+      const newReadStatus = !message.read;
+  
+      const response = await axios.put(
+        `https://uni-support.sytes.net/api/mark-message-read/`,
+        // `http://localhost:8000/api/mark-message-read/`,
+        { messageId, read: newReadStatus },
+        { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+      );
+  
+      // Frissítsük az üzenetek állapotát a válasz alapján
+      setMessages((prevMessages) =>
+        prevMessages.map((message) =>
+          message.id === messageId ? { ...message, read: newReadStatus } : message
+        )
+      );
+    } catch (err) {
+      console.error("Üzenet állapotának frissítése sikertelen", err);
+      setError(err.response?.data?.error || "Hiba történt az üzenet frissítésekor.");
+    }
+  };
+
+  const fetchMessages = async (ticketId) => {
+    try {
+      const response = await axios.post(
+        `https://uni-support.sytes.net/api/get-ticket-messages/`,
+        //`http://localhost:8000/api/get-ticket-messages/`,
+        {ticketId},
+        { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
+      );
+      setMessages(response.data);
+    } catch (err) {
+      console.error("Üzenetek lekérése sikertelen", err);
+      setError(err.response?.data?.error || "Hiba történt az üzenetek lekérésekor.");
+    }
+  };
+
+  // "Megtekint" gombra kattintás
+  const handleViewMessages = (ticketId) => {
+    setSelectedTicketId(ticketId);
+    fetchMessages(ticketId);
+  };
 
   if (loading) {
     return <div>Betöltés...</div>;
@@ -127,6 +192,13 @@ const ShowTickets = () => {
                 <p className="body-1 mb-6 text-n-3 min-w-80 max-w-96 break-words h-48 hyphens-auto overflow-y-auto">{ticket.description}</p>
 
                 <div className="flex items-center mb-4">
+                  <span className="text-sm font-bold text-n-2">Létrehozva:</span>
+                  <span className="ml-2 text-sm text-n-3">
+                    {new Date(ticket.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+
+                <div className="flex items-center mb-4">
                   <span className="text-sm font-bold text-n-2">Prioritás:</span>
                   <div className={`ml-2 px-2 py-1 rounded-full text-xs font-bold ${
                     ticket.priority === 1 ? 'bg-green-500 text-white' :
@@ -135,13 +207,6 @@ const ShowTickets = () => {
                   }`}>
                     {translatePriority(ticket.priority)}
                   </div>
-                </div>
-
-                <div className="flex items-center mb-4">
-                  <span className="text-sm font-bold text-n-2">Létrehozva:</span>
-                  <span className="ml-2 text-sm text-n-3">
-                    {new Date(ticket.created_at).toLocaleDateString()}
-                  </span>
                 </div>
 
                 <div className="flex items-center mb-4">
@@ -161,6 +226,14 @@ const ShowTickets = () => {
                   <EnvelopeIcon />
                   <sup className="ml-1 text-xs text-blue-500">{ticket.message_count}</sup>
                 </div>
+
+                {/* "Megtekint" gomb */}
+                <button
+                  onClick={() => handleViewMessages(ticket.id)}
+                  className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                  Üzenetek
+                </button>
               </div>
 
               {getCardIsLight() && <GradientLight />}
@@ -176,6 +249,41 @@ const ShowTickets = () => {
             </div>
           ))}
         </div>
+
+        {/* Üzenetek megjelenítése */}
+        {selectedTicketId && (
+          <div className="fixed top-15 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem] max-h-[80vh] overflow-y-auto">
+              <h2 className="text-xl font-bold mb-4 text-white">Üzenetek</h2>
+              {messages.length > 0 ? (
+                messages.map((message) => (
+                  <div key={message.id} className="mb-4 p-4 bg-n-7 rounded-lg">
+                    <div className="flex justify-between items-start">
+                      <p className="text-gray-400 break-words h-24 hyphens-auto overflow-y-auto">
+                        {message.text}
+                      </p>
+                    </div>
+                    <p className="text-sm mt-4 text-gray-400">
+                      {new Date(message.created_at).toLocaleString()}
+                    </p>
+                    <EyeIcon
+                        onClick={() => markMessageAsRead(message.id)}
+                        isRead={message.read}
+                      />
+                  </div>
+                ))
+              ) : (
+                <p className="text-gray-300">Nincsenek még üzenetek a hibajegyhez.</p>
+              )}
+              <button
+                onClick={() => setSelectedTicketId(null)}
+                className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
+              >
+                Bezár
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </Section>
   );

@@ -321,3 +321,27 @@ class NewMessageView(generics.GenericAPIView):
             {"success": "Üzenet sikeresen elküldve.", "message_id": message.id},
             status=status.HTTP_201_CREATED
         )
+    
+class GetTicketMessagesView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            ticket_id = request.data.get('ticketId')
+            messages = Message.objects.filter(ticket_id=ticket_id)
+            serializer = MessageSerializer(messages, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+class MarkMessageAsReadView(generics.GenericAPIView):
+    def put(self, request):
+        try:
+            message_id = request.data.get('messageId')
+            read_state = request.data.get('read')
+            message = Message.objects.get(id=message_id)
+            message.read = read_state
+            message.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        except Message.DoesNotExist:
+            return Response({"error": "Message not found"}, status=status.HTTP_404_NOT_FOUND)

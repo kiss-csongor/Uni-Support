@@ -12,11 +12,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3&#2kfyb*8%vkyvps)nk#*3xx@6kb=7*9f8b1+l(5l5@#8m4rb'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+"""
 
 DATABASES = {
     'default': {
@@ -37,7 +38,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-"""
+
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True
