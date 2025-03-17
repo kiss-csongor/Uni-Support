@@ -65,6 +65,17 @@ class createTicketSerializer(serializers.Serializer):
         return ticket
     
 class TicketSerializer(serializers.ModelSerializer):
+    message_count = serializers.SerializerMethodField()
+
     class Meta:
         model = Ticket
+        fields = '__all__'
+
+    def get_message_count(self, obj):
+        return Message.objects.filter(ticket=obj, read=False).count()
+    
+class MessageSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Message
         fields = '__all__'

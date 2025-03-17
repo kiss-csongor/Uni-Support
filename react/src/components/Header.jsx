@@ -30,7 +30,7 @@ const Header = () => {
             try {
                 const response = await axios.get(
                     `https://uni-support.sytes.net/api/get-is-superuser/`,
-                    //`http://localhost:8000/api/get-is-superuser/`, 
+                    // `http://localhost:8000/api/get-is-superuser/`, 
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
                 setIsSuperUser(response.data.is_superuser);

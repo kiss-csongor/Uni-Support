@@ -16,4 +16,7 @@ urlpatterns = [
     path('get-all-tickets/', GetAllTickets.as_view(), name='get-all-tickets'),
     path('get-is-superuser/', GetIsSuperUserView.as_view(), name='get-is-superuser'),
     path('update-ticket/', UpdateTicketView.as_view(), name='update-ticket'),
+    path('new-message/', NewMessageView.as_view(), name='new-message'),
+    path('get-ticket-messages/', GetTicketMessagesView.as_view(), name='get-ticket-messages'),
+    path('mark-message-read/', MarkMessageAsReadView.as_view(), name='mark-message-read'),
 ]

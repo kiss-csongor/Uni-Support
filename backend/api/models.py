@@ -42,10 +42,11 @@ class Ticket(models.Model):
         return f'{self.author} {self.id}. számú {self.status} ticketje'
 
 class Message(models.Model):
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)  # OneToOne helyett ForeignKey
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages")  # Ticket kapcsolata
-    text = models.CharField(max_length=500, blank=False, null=False)  # Hosszabb szöveg támogatás
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, blank=False, null=False)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name="messages") 
+    text = models.CharField(max_length=500, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
+    read = models.BooleanField(default=False)
 
     def __str__(self):
         return f'{self.sender} üzenete a {self.ticket.id}. számú tickethez'

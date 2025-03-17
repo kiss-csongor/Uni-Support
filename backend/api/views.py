@@ -7,6 +7,7 @@ from rest_framework.permissions import IsAuthenticated
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from .models import *
 from .serializers import *
 
@@ -294,3 +295,53 @@ class UpdateTicketView(generics.GenericAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class NewMessageView(generics.GenericAPIView):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        ticket_id = request.data.get('ticket_id')
+        text = request.data.get('message')
+
+        ticket = get_object_or_404(Ticket, id=ticket_id)
+
+        if not text:
+            return Response(
+                {"error": "Az üzenet szövege nem lehet üres."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        message = Message.objects.create(
+            sender=user,
+            ticket=ticket,
+            text=text
+        )
+
+        # Válasz küldése
+        return Response(
+            {"success": "Üzenet sikeresen elküldve.", "message_id": message.id},
+            status=status.HTTP_201_CREATED
+        )
+    
+class GetTicketMessagesView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            ticket_id = request.data.get('ticketId')
+            messages = Message.objects.filter(ticket_id=ticket_id)
+            serializer = MessageSerializer(messages, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)
+
+class MarkMessageAsReadView(generics.GenericAPIView):
+    def put(self, request):
+        try:
+            message_id = request.data.get('messageId')
+            read_state = request.data.get('read')
+            message = Message.objects.get(id=message_id)
+            message.read = read_state
+            message.save()
+            return Response({"status": "success"}, status=status.HTTP_200_OK)
+        except Message.DoesNotExist:
+            return Response({"error": "Message not found"}, status=status.HTTP_404_NOT_FOUND)
