@@ -1,3 +1,4 @@
+from os import name
 from tokenize import Comment
 from django.db import models
 from django.contrib.auth.models import User
@@ -37,6 +38,7 @@ class Ticket(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=1)
     resolved_at = models.DateTimeField(null=True, blank=True)
+    archived = models.BooleanField(default=False) 
     
     def __str__(self):
         return f'{self.author} {self.id}. számú {self.status} ticketje'
@@ -60,3 +62,10 @@ class NeptunData(models.Model):
 
     def __str__(self):
         return f'{self.full_name} - {self.neptun_code}'
+    
+class Tag(models.Model):
+    ticket = models.ManyToManyField(Ticket, on_delete=models.CASCADE, related_name="tags")
+    name = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'{self.ticket.id}. számú tickethez tartozó {self.name} tag'

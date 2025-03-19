@@ -26,8 +26,8 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        // "http://localhost:8000/api/login/",
-        "https://uni-support.sytes.net/api/login/",
+        "http://localhost:8000/api/login/",
+       //  "https://uni-support.sytes.net/api/login/",
         { 
           username,
           password,

@@ -17,7 +17,7 @@ DEBUG = False
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-"""
+
 
 DATABASES = {
     'default': {
@@ -38,7 +38,7 @@ DATABASES = {
         'PORT': config('DB_PORT'),
     }
 }
-
+"""
 
 ALLOWED_HOSTS = ['*']
 CORS_ALLOW_ALL_ORIGINS = True

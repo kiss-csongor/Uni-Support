@@ -29,8 +29,8 @@ const Header = () => {
         const fetchUser = async () => {
             try {
                 const response = await axios.get(
-                    `https://uni-support.sytes.net/api/get-is-superuser/`,
-                    // `http://localhost:8000/api/get-is-superuser/`, 
+                    // `https://uni-support.sytes.net/api/get-is-superuser/`,
+                    `http://localhost:8000/api/get-is-superuser/`, 
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
                 setIsSuperUser(response.data.is_superuser);
@@ -65,8 +65,8 @@ const Header = () => {
 
         try {
             await axios.post(
-                "https://uni-support.sytes.net/api/logout/",
-                // "http://localhost:8000/api/logout/",
+                //"https://uni-support.sytes.net/api/logout/",
+                 "http://localhost:8000/api/logout/",
                 {},
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );
