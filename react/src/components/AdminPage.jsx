@@ -62,10 +62,10 @@ const translatePriority = (priority) => {
 const AdminPage = () => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingTicketId, setEditingTicketId] = useState(null); // Szerkesztés alatt lévő ticket ID
-    const [editedTicket, setEditedTicket] = useState({}); // Szerkesztett ticket adatai
-    const [messageTicketId, setMessageTicketId] = useState(null); // Üzenet küldéséhez kiválasztott ticket ID
-    const [messageText, setMessageText] = useState(""); // Üzenet szövege
+    const [editingTicketId, setEditingTicketId] = useState(null);
+    const [editedTicket, setEditedTicket] = useState({});
+    const [messageTicketId, setMessageTicketId] = useState(null);
+    const [messageText, setMessageText] = useState("");
     const csrfToken = Cookies.get("csrftoken");
     const [error, setError] = useState("");
     const [succes, setSucces] = useState("");
@@ -102,6 +102,7 @@ const AdminPage = () => {
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
 
+                console.log(ticketsResponse.data);
                 setTickets(ticketsResponse.data);
             } catch (err) {
                 console.error("Hiba történt", err);
@@ -244,6 +245,24 @@ const AdminPage = () => {
                                                 {translateStatus(ticket.status)}
                                             </div>
                                         )}
+                                    </div>
+
+                                    <div className="flex items-center mb-4">
+                                        <span className="text-sm font-bold text-n-2">Címkék:</span>
+                                        <div className="flex flex-wrap gap-1 ml-2">
+                                            {ticket.tags && ticket.tags.length > 0 ? (
+                                                ticket.tags.map((tag, index) => (
+                                                    <span 
+                                                        key={index} 
+                                                        className="px-2 py-1 rounded-full text-xs font-bold bg-purple-500 text-white"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="text-xs text-n-3">Nincsenek címkék</span>
+                                            )}
+                                        </div>
                                     </div>
 
                                     <button

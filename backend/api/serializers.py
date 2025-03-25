@@ -66,6 +66,8 @@ class createTicketSerializer(serializers.Serializer):
     
 class TicketSerializer(serializers.ModelSerializer):
     message_count = serializers.SerializerMethodField()
+    tags = serializers.SerializerMethodField()  # Egyedi getter metódus olvasásra
+    tags_input = serializers.ListField(write_only=True, required=False)  # Írásnál stringeket fogad el
 
     class Meta:
         model = Ticket
@@ -73,9 +75,27 @@ class TicketSerializer(serializers.ModelSerializer):
 
     def get_message_count(self, obj):
         return Message.objects.filter(ticket=obj, read=False).count()
+
+    def get_tags(self, obj):
+        return [tag.name for tag in obj.tags.all()]  # Neveket ad vissza
+
+    def update(self, instance, validated_data):
+        # Ha vannak tags_input adatok, frissítjük a tageket
+        if "tags_input" in validated_data:
+            tag_names = validated_data.pop("tags_input")
+            tags = [Tag.objects.get_or_create(name=name)[0] for name in tag_names]
+            instance.tags.set(tags)
+        
+        return super().update(instance, validated_data)
     
 class MessageSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Message
+        fields = '__all__'
+
+class TagSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Tag
         fields = '__all__'

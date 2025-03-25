@@ -345,3 +345,14 @@ class MarkMessageAsReadView(generics.GenericAPIView):
             return Response({"status": "success"}, status=status.HTTP_200_OK)
         except Message.DoesNotExist:
             return Response({"error": "Message not found"}, status=status.HTTP_404_NOT_FOUND)
+        
+class GetTags(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            tags = Tag.objects
+            serializer = TagSerializer(tags, many=True)
+            return Response(serializer.data)
+        except Exception as e:
+            return Response({"error": str(e)}, status=500)

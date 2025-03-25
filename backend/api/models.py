@@ -16,6 +16,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
     
+class Tag(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+    
 class Ticket(models.Model):
     STATUS_CHOICES = [
         ('open', 'Nyitott'),
@@ -39,6 +45,7 @@ class Ticket(models.Model):
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=1)
     resolved_at = models.DateTimeField(null=True, blank=True)
     archived = models.BooleanField(default=False) 
+    tags = models.ManyToManyField(Tag, related_name="tickets")
     
     def __str__(self):
         return f'{self.author} {self.id}. számú {self.status} ticketje'
@@ -62,10 +69,3 @@ class NeptunData(models.Model):
 
     def __str__(self):
         return f'{self.full_name} - {self.neptun_code}'
-    
-class Tag(models.Model):
-    ticket = models.ManyToManyField(Ticket, on_delete=models.CASCADE, related_name="tags")
-    name = models.CharField(max_length=255)
-
-    def __str__(self):
-        return f'{self.ticket.id}. számú tickethez tartozó {self.name} tag'

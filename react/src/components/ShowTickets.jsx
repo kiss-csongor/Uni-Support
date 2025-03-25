@@ -221,6 +221,24 @@ const ShowTickets = () => {
                   </div>
                 </div>
 
+                <div className="flex items-center mb-4">
+                    <span className="text-sm font-bold text-n-2">Címkék:</span>
+                    <div className="flex flex-wrap gap-1 ml-2">
+                        {ticket.tags && ticket.tags.length > 0 ? (
+                            ticket.tags.map((tag, index) => (
+                                <span 
+                                    key={index} 
+                                    className="px-2 py-1 rounded-full text-xs font-bold bg-purple-500 text-white"
+                                >
+                                    {tag}
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-xs text-n-3">Nincsenek címkék</span>
+                        )}
+                    </div>
+                </div>
+
                 {/* Üzenetek száma és boríték ikon */}
                 <div className="flex items-center mt-4">
                   <EnvelopeIcon />
