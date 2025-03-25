@@ -192,7 +192,6 @@ const AdminPage = () => {
     return (
         <Section>
             <div className="container relative z-2">
-                <Heading className="md:max-w-md lg:max-w-2xl" title="Itt találhatóak az általad létrehozott hibajegyek" />
 
                 <div className="flex flex-wrap gap-10 mb-10 justify-center">
                     {tickets.map((ticket) => {
