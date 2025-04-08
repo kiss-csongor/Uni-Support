@@ -7,4 +7,4 @@ admin.site.register(UserProfile)
 admin.site.register(Ticket)
 admin.site.register(Message)
 admin.site.register(NeptunData)
-
+admin.site.register(Tag)

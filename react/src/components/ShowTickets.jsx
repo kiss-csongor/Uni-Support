@@ -221,6 +221,24 @@ const ShowTickets = () => {
                   </div>
                 </div>
 
+                <div className="flex items-center mb-4">
+                    <span className="text-sm font-bold text-n-2">Címkék:</span>
+                    <div className="flex flex-wrap gap-1 ml-2">
+                        {ticket.tags && ticket.tags.length > 0 ? (
+                            ticket.tags.map((tag, index) => (
+                                <span 
+                                    key={index} 
+                                    className="px-2 py-1 rounded-full text-xs font-bold bg-purple-500 text-white"
+                                >
+                                    {tag}
+                                </span>
+                            ))
+                        ) : (
+                            <span className="text-xs text-n-3">Nincsenek címkék</span>
+                        )}
+                    </div>
+                </div>
+
                 {/* Üzenetek száma és boríték ikon */}
                 <div className="flex items-center mt-4">
                   <EnvelopeIcon />
@@ -253,8 +271,17 @@ const ShowTickets = () => {
         {/* Üzenetek megjelenítése */}
         {selectedTicketId && (
           <div className="fixed top-15 inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem] max-h-[80vh] overflow-y-auto">
-              <h2 className="text-xl font-bold mb-4 text-white">Üzenetek</h2>
+            <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem] max-h-[80vh] overflow-y-auto relative">
+              <button
+                onClick={() => setSelectedTicketId(null)}
+                className="absolute top-4 right-4 text-gray-400 hover:text-white focus:outline-none"
+                aria-label="Bezár"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              <h2 className="text-xl font-bold mb-4 text-center text-white">Üzenetek</h2>
               {messages.length > 0 ? (
                 messages.map((message) => (
                   <div key={message.id} className="mb-4 p-4 bg-n-7 rounded-lg">
@@ -267,20 +294,14 @@ const ShowTickets = () => {
                       {new Date(message.created_at).toLocaleString()}
                     </p>
                     <EyeIcon
-                        onClick={() => markMessageAsRead(message.id)}
-                        isRead={message.read}
-                      />
+                      onClick={() => markMessageAsRead(message.id)}
+                      isRead={message.read}
+                    />
                   </div>
                 ))
               ) : (
                 <p className="text-gray-300">Nincsenek még üzenetek a hibajegyhez.</p>
               )}
-              <button
-                onClick={() => setSelectedTicketId(null)}
-                className="mt-4 w-full px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              >
-                Bezár
-              </button>
             </div>
           </div>
         )}

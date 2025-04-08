@@ -19,6 +19,8 @@ const CreateTicket = () => {
     title: "",
     description: "",
   });
+  const [tags, setTags] = useState([]);
+  const [activeTags, setActiveTags] = useState([]);
 
   useEffect(() => {
     const validateNeptunCode = async () => {
@@ -36,6 +38,14 @@ const CreateTicket = () => {
           // `http://localhost:8000/api/validate-neptun-code/`,
           { withCredentials: true, headers: { "X-CSRFToken": csrfToken } }
         );
+
+        const getTags = await axios.get(
+          `https://uni-support.sytes.net/api/get-tags/`,
+          // `http://localhost:8000/api/get-tags/`,
+          { withCredentials: true, headers: { "X-CSRFToken": csrfToken } }
+        );
+
+        setTags(getTags.data)
 
       } catch (err) {
         setError(err.response?.data?.error || "Hiba történt az adatok lekérésekor." );

@@ -66,7 +66,7 @@ const Header = () => {
         try {
             await axios.post(
                 "https://uni-support.sytes.net/api/logout/",
-                // "http://localhost:8000/api/logout/",
+                 //"http://localhost:8000/api/logout/",
                 {},
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );

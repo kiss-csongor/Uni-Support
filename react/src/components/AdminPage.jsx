@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import ErrorAlert from './ErrorAlert';
 import SuccesAlert from './SuccesAlert';
+import { benefitCard1 } from '../assets';
 
 const backgroundImages = [
     "src/assets/benefits/card-1.svg",
@@ -61,10 +62,10 @@ const translatePriority = (priority) => {
 const AdminPage = () => {
     const [tickets, setTickets] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [editingTicketId, setEditingTicketId] = useState(null); // Szerkesztés alatt lévő ticket ID
-    const [editedTicket, setEditedTicket] = useState({}); // Szerkesztett ticket adatai
-    const [messageTicketId, setMessageTicketId] = useState(null); // Üzenet küldéséhez kiválasztott ticket ID
-    const [messageText, setMessageText] = useState(""); // Üzenet szövege
+    const [editingTicketId, setEditingTicketId] = useState(null);
+    const [editedTicket, setEditedTicket] = useState({});
+    const [messageTicketId, setMessageTicketId] = useState(null);
+    const [messageText, setMessageText] = useState("");
     const csrfToken = Cookies.get("csrftoken");
     const [error, setError] = useState("");
     const [succes, setSucces] = useState("");
@@ -85,7 +86,7 @@ const AdminPage = () => {
 
                 const adminCheckResponse = await axios.get(
                     `https://uni-support.sytes.net/api/get-is-superuser/`,
-                    //`http://localhost:8000/api/get-is-superuser/`,
+                    // `http://localhost:8000/api/get-is-superuser/`,
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
 
@@ -101,6 +102,7 @@ const AdminPage = () => {
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
 
+                console.log(ticketsResponse.data);
                 setTickets(ticketsResponse.data);
             } catch (err) {
                 console.error("Hiba történt", err);
@@ -157,10 +159,16 @@ const AdminPage = () => {
     const handleMessageSend = async (ticketId) => {
         try {
             console.log(messageText)
+            if (messageText.length < 1 || messageText.length > 50) {
+                setError("Az üzenetnek 1 és 50 karakter között kell lennie!");
+                await sleep(4000);
+                setError("");
+                return;
+              }
             const csrfToken = Cookies.get("csrftoken");
             await axios.post(
-                `https://uni-support.sytes.net/api/new-message/`,
-                //`http://localhost:8000/api/new-message/`,
+                 `https://uni-support.sytes.net/api/new-message/`,
+               //`http://localhost:8000/api/new-message/`,
                 { ticket_id: ticketId, message: messageText },
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );
@@ -171,7 +179,6 @@ const AdminPage = () => {
             await sleep(4000);
             setSucces("");
         } catch (err) {
-            console.error("Üzenet küldése sikertelen", err);
             setError("Hiba történt az üzenet küldése során.");
             await sleep(4000);
             setError("");
@@ -185,7 +192,6 @@ const AdminPage = () => {
     return (
         <Section>
             <div className="container relative z-2">
-                <Heading className="md:max-w-md lg:max-w-2xl" title="Itt találhatóak az általad létrehozott hibajegyek" />
 
                 <div className="flex flex-wrap gap-10 mb-10 justify-center">
                     {tickets.map((ticket) => {
@@ -240,6 +246,24 @@ const AdminPage = () => {
                                         )}
                                     </div>
 
+                                    <div className="flex items-center mb-4">
+                                        <span className="text-sm font-bold text-n-2">Címkék:</span>
+                                        <div className="flex flex-wrap gap-1 ml-2">
+                                            {ticket.tags && ticket.tags.length > 0 ? (
+                                                ticket.tags.map((tag, index) => (
+                                                    <span 
+                                                        key={index} 
+                                                        className="px-2 py-1 rounded-full text-xs font-bold bg-purple-500 text-white"
+                                                    >
+                                                        {tag}
+                                                    </span>
+                                                ))
+                                            ) : (
+                                                <span className="text-xs text-n-3">Nincsenek címkék</span>
+                                            )}
+                                        </div>
+                                    </div>
+
                                     <button
                                         onClick={() => setMessageTicketId(ticket.id)}
                                         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
@@ -271,21 +295,31 @@ const AdminPage = () => {
                         );
                     })}
                 </div>
-
                 {/* Üzenet küldés div középre igazítva */}
                 {messageTicketId && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-                        <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem]">
+                        <div className="bg-n-6/95 p-8 rounded-lg shadow-lg w-[30rem] relative">
+                            {/* Close button */}
+                            <button
+                                onClick={() => {
+                                    setMessageTicketId(null);
+                                    setMessageText("");
+                                }}
+                                className="absolute top-2 right-2 text-n-1 hover:text-color-1 transition-colors duration-200"
+                            >
+                                ✕
+                            </button>
+                            
                             <textarea
                                 value={messageText}
                                 onChange={(e) => setMessageText(e.target.value)}
-                                className="w-full p-2 border rounded mb-4"
+                                className="w-full p-2 border rounded mb-4 text-n-7"
                                 rows="4"
                                 placeholder="Írd ide az üzeneted..."
                             />
                             <button
                                 onClick={() => handleMessageSend(messageTicketId)}
-                                className="w-full px-4 py-2 bg-green-500 text-white rounded"
+                                className="w-full px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
                             >
                                 Küldés
                             </button>

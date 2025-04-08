@@ -11,6 +11,7 @@ urlpatterns = [
     path('validate-user/', ValidateUserView.as_view(), name='validate-user'),
     path('token-refresh/', RefreshTokenView.as_view(), name='token-refresh'),
     path('validate-neptun-code/', ValidateNeptunCode.as_view(), name='validate-neptun-code'),
+    path('get-tags/', GetTags.as_view(), name='get-tags'),
     path('create-tickets/', CreateTickets.as_view(), name='create-tickets'),
     path('get-self-tickets/', GetSelfTickets.as_view(), name='get-self-tickets'),
     path('get-all-tickets/', GetAllTickets.as_view(), name='get-all-tickets'),

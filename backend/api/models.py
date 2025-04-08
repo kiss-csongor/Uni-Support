@@ -1,3 +1,4 @@
+from os import name
 from tokenize import Comment
 from django.db import models
 from django.contrib.auth.models import User
@@ -14,6 +15,12 @@ class UserProfile(models.Model):
 
     def __str__(self):
         return self.user.username
+    
+class Tag(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
     
 class Ticket(models.Model):
     STATUS_CHOICES = [
@@ -37,6 +44,8 @@ class Ticket(models.Model):
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open')
     priority = models.IntegerField(choices=PRIORITY_CHOICES, default=1)
     resolved_at = models.DateTimeField(null=True, blank=True)
+    archived = models.BooleanField(default=False) 
+    tags = models.ManyToManyField(Tag, related_name="tickets")
     
     def __str__(self):
         return f'{self.author} {self.id}. számú {self.status} ticketje'
