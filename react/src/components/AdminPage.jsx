@@ -313,7 +313,7 @@ const AdminPage = () => {
                             <textarea
                                 value={messageText}
                                 onChange={(e) => setMessageText(e.target.value)}
-                                className="w-full p-2 border rounded mb-4 text-n-7"
+                                className="w-full p-2 border rounded mb-4 text-n-2"
                                 rows="4"
                                 placeholder="Írd ide az üzeneted..."
                             />
