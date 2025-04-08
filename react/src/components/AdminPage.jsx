@@ -85,8 +85,8 @@ const AdminPage = () => {
                 }
 
                 const adminCheckResponse = await axios.get(
-                    // `https://uni-support.sytes.net/api/get-is-superuser/`,
-                    `http://localhost:8000/api/get-is-superuser/`,
+                    `https://uni-support.sytes.net/api/get-is-superuser/`,
+                    // `http://localhost:8000/api/get-is-superuser/`,
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
 
@@ -97,8 +97,8 @@ const AdminPage = () => {
                 }
 
                 const ticketsResponse = await axios.get(
-                    //`https://uni-support.sytes.net/api/get-all-tickets/`,
-                    `http://localhost:8000/api/get-all-tickets/`,
+                    `https://uni-support.sytes.net/api/get-all-tickets/`,
+                    //`http://localhost:8000/api/get-all-tickets/`,
                     { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
                 );
 
@@ -124,8 +124,8 @@ const AdminPage = () => {
         try {
             const csrfToken = Cookies.get("csrftoken");
             const response = await axios.put(
-                //`https://uni-support.sytes.net/api/update-ticket/`,
-                `http://localhost:8000/api/update-ticket/`,
+                `https://uni-support.sytes.net/api/update-ticket/`,
+                //`http://localhost:8000/api/update-ticket/`,
                 editedTicket,
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );
@@ -167,8 +167,8 @@ const AdminPage = () => {
               }
             const csrfToken = Cookies.get("csrftoken");
             await axios.post(
-                 //`https://uni-support.sytes.net/api/new-message/`,
-               `http://localhost:8000/api/new-message/`,
+                 `https://uni-support.sytes.net/api/new-message/`,
+               //`http://localhost:8000/api/new-message/`,
                 { ticket_id: ticketId, message: messageText },
                 { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
             );

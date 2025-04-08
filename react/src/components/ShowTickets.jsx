@@ -109,8 +109,8 @@ const ShowTickets = () => {
         }
 
         const response = await axios.get(
-          // `https://uni-support.sytes.net/api/get-self-tickets/`,
-          `http://localhost:8000/api/get-self-tickets/`,
+          `https://uni-support.sytes.net/api/get-self-tickets/`,
+          // `http://localhost:8000/api/get-self-tickets/`,
           { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
         );
 
@@ -132,8 +132,8 @@ const ShowTickets = () => {
       const newReadStatus = !message.read;
   
       const response = await axios.put(
-        // `https://uni-support.sytes.net/api/mark-message-read/`,
-        `http://localhost:8000/api/mark-message-read/`,
+        `https://uni-support.sytes.net/api/mark-message-read/`,
+        // `http://localhost:8000/api/mark-message-read/`,
         { messageId, read: newReadStatus },
         { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
       );
@@ -153,8 +153,8 @@ const ShowTickets = () => {
   const fetchMessages = async (ticketId) => {
     try {
       const response = await axios.post(
-        //`https://uni-support.sytes.net/api/get-ticket-messages/`,
-        `http://localhost:8000/api/get-ticket-messages/`,
+        `https://uni-support.sytes.net/api/get-ticket-messages/`,
+        //`http://localhost:8000/api/get-ticket-messages/`,
         {ticketId},
         { withCredentials: true, headers: { 'X-CSRFToken': csrfToken } }
       );

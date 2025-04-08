@@ -34,14 +34,14 @@ const CreateTicket = () => {
         }
 
         const response = await axios.get(
-          // `https://uni-support.sytes.net/api/validate-neptun-code/`,
-          `http://localhost:8000/api/validate-neptun-code/`,
+          `https://uni-support.sytes.net/api/validate-neptun-code/`,
+          // `http://localhost:8000/api/validate-neptun-code/`,
           { withCredentials: true, headers: { "X-CSRFToken": csrfToken } }
         );
 
         const getTags = await axios.get(
-          // `https://uni-support.sytes.net/api/get-tags/`,
-          `http://localhost:8000/api/get-tags/`,
+          `https://uni-support.sytes.net/api/get-tags/`,
+          // `http://localhost:8000/api/get-tags/`,
           { withCredentials: true, headers: { "X-CSRFToken": csrfToken } }
         );
 
@@ -76,8 +76,8 @@ const CreateTicket = () => {
       }
 
       const response = await axios.post(
-        // `https://uni-support.sytes.net/api/create-tickets/`,
-        `http://localhost:8000/api/create-tickets/`,
+        `https://uni-support.sytes.net/api/create-tickets/`,
+        // `http://localhost:8000/api/create-tickets/`,
         { ...formData },
         { withCredentials: true, headers: {'X-CSRFToken': csrfToken,}, },
       );
