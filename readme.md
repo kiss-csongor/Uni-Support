@@ -82,9 +82,9 @@ Before starting, ensure you have the following installed on your system:
 
 ## CI/CD
 
-This project uses **Jenkins** for continuous integration and delivery. The Jenkins configuration file can be found in the repository under `/ci/jenkinsfile`. This file defines the steps for building, testing, and deploying the application.
+This project uses **Jenkins** for continuous integration and delivery. The Jenkins configuration file can be found in the repository under `/Jenkinsfile`. This file defines the steps for building, testing, and deploying the application.
 
-For more details on how Jenkins is configured, refer to the [Jenkinsfile](./ci/jenkinsfile).
+For more details on how Jenkins is configured, refer to the [Jenkinsfile](./Jenkinsfile).
 
 ## Containerization
 
