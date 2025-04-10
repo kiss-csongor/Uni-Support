@@ -1,39 +1,39 @@
-# Uni-Support Ticketing System
+# Uni-Support Ticketing System 🎫
 
-Uni-Support is a ticketing system built for managing support requests in a university environment. It provides a user-friendly interface for creating, tracking, and resolving tickets, aimed at enhancing communication between users and support teams.
+Uni-Support is a ticketing system built for managing support requests in a university environment. It provides a user-friendly interface for creating, tracking, and resolving tickets, aimed at enhancing communication between users and support teams. 🎓
 
-## Features
+## Features 🚀
 
-- **Ticket Management**: Create, update, and resolve support tickets.
-- **User Roles**: Admins, staff, and users with different access permissions.
-- **Real-time Notifications**: Alerts on ticket updates.
-- **Search & Filters**: Easily search tickets by status, priority, or category.
-- **Frontend**: Built with React.js and styled with TailwindCSS.
-- **Backend**: Django-based backend API for robust performance.
-- **Docker**: Containerized setup for easy deployment.
-- **CI/CD**: Automated pipelines with Jenkins.
+- **Ticket Management**: Create, update, and resolve support tickets. 📑
+- **User Roles**: Admins, staff, and users with different access permissions. 👩‍💻👨‍💻
+- **Real-time Notifications**: Alerts on ticket updates. 🔔
+- **Search & Filters**: Easily search tickets by status, priority, or category. 🔍
+- **Frontend**: Built with React.js and styled with TailwindCSS. 🎨
+- **Backend**: Django-based backend API for robust performance. ⚙️
+- **Docker**: Containerized setup for easy deployment. 🐳
+- **CI/CD**: Automated pipelines with Jenkins. 🔄
 
-## Technologies
+## Technologies 🛠️
 
 - **Frontend**: React.js, TailwindCSS, JavaScript
 - **Backend**: Django (Python)
 - **Database**: SQLite (default) for development and PostgreSQL for production
 - **Containerization**: Docker, Nginx (for reverse proxy)
 - **CI/CD**: Jenkins
-- **Authentication**: JWT tokens for secure user login
+- **Authentication**: JWT tokens for secure user login 🔒
 
-## Setup
+## Setup 🏗️
 
-### Prerequisites
+### Prerequisites 📋
 
 Before starting, ensure you have the following installed on your system:
 
-- Docker
-- Node.js (for frontend)
-- Python (for backend)
-- PostgreSQL (for production)
+- Docker 🐳
+- Node.js (for frontend) 💻
+- Python (for backend) 🐍
+- PostgreSQL (for production) 🍃
 
-### Installation
+### Installation ⚡
 
 1. **Clone the repository**:
     ```bash
@@ -74,19 +74,19 @@ Before starting, ensure you have the following installed on your system:
     - **Frontend**: `http://localhost:3000`
     - **Backend**: `http://localhost:8000`
 
-## Usage
+## Usage 🧑‍💻
 
-- **Ticket Creation**: Users can create tickets by entering an issue description and setting priority.
-- **Ticket Dashboard**: Admins and support staff can manage and resolve tickets.
-- **Notifications**: Users receive notifications for ticket updates.
+- **Ticket Creation**: Users can create tickets by entering an issue description and setting priority. 📝
+- **Ticket Dashboard**: Admins and support staff can manage and resolve tickets. 📊
+- **Notifications**: Users receive notifications for ticket updates. 🔔
 
-## CI/CD
+## CI/CD 🔄
 
 This project uses **Jenkins** for continuous integration and delivery. The Jenkins configuration file can be found in the repository under `/Jenkinsfile`. This file defines the steps for building, testing, and deploying the application.
 
 For more details on how Jenkins is configured, refer to the [Jenkinsfile](./Jenkinsfile).
 
-## Containerization
+## Containerization 🐳
 
 The application is containerized using **Docker** for easy deployment. The `docker-compose.yml` file is located in the root of the repository and orchestrates the services for both the frontend and backend, along with the necessary dependencies like the database.
 
